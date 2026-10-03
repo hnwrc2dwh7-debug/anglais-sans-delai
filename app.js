@@ -98,7 +98,7 @@ try{
     reduceMotion:saved.reduceMotion===true
   };
 }catch{}
-function persist(){try{localStorage.setItem(stateKey,JSON.stringify(state))}catch{toast("Le navigateur n’a pas pu enregistrer les progrès.")}}
+function persist(){try{localStorage.setItem(stateKey,JSON.stringify(state));return true}catch{toast("Le navigateur n’a pas pu enregistrer les progrès.");return false}}
 const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll(s));
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ids=arr=>new Set(arr);
@@ -236,12 +236,49 @@ function renderSettings(){
   const today=new Date().getDay(),selected=state.studyDays.map(day=>studyDayLabels.find(([id])=>id===day)?.[1]).filter(Boolean);
   $("#studyDaySummary").textContent=selected.length?"Tes jours : "+selected.join(", ")+". "+(state.studyDays.includes(today)?"Aujourd’hui est un jour choisi.":"Aujourd’hui est un jour libre."):"Choisis au moins un jour.";
 }
+function validProgressBackup(data){
+  if(!data||typeof data!=="object"||Array.isArray(data)||data.site!=="Anglais sans délai"||!data.progress||typeof data.progress!=="object"||Array.isArray(data.progress)||!data.preferences||typeof data.preferences!=="object"||Array.isArray(data.preferences))return false;
+  const p=data.progress,prefs=data.preferences,stringArrays=[p.knownWords,p.seenLessons,p.knownVerbs,p.savedPhrases],validDate=value=>value===null||typeof value==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value))&&new Date(`${value}T00:00:00Z`).toISOString().slice(0,10)===value;
+  return !stringArrays.some(items=>!Array.isArray(items)||items.length>1000||items.some(item=>typeof item!=="string"))&&(p.bestScore===null||Number.isInteger(p.bestScore)&&p.bestScore>=0&&p.bestScore<=10)&&Number.isInteger(p.streak)&&p.streak>=0&&p.streak<=36500&&(p.lastVisit===undefined||validDate(p.lastVisit))&&themes.includes(prefs.theme)&&Array.isArray(prefs.studyDays)&&prefs.studyDays.length>0&&!prefs.studyDays.some(day=>!Number.isInteger(day)||day<0||day>6)&&typeof prefs.reduceMotion==="boolean";
+}
+function restoreProgress(data){
+  if(!validProgressBackup(data))return false;
+  const p=data.progress,prefs=data.preferences;
+  const wordIds=new Set(words.map(word=>word.id)),lessonIds=new Set(grammar.map(lesson=>lesson.id)),verbIds=new Set(verbs.map(verb=>verb.base)),phraseIds=new Set(phrases.map(phrase=>phrase.id)),previous=state;
+  state={
+    ...freshState(),
+    knownWords:[...new Set(p.knownWords.flatMap(id=>wordIds.has(id)?[id]:words.filter(word=>word.legacyId===id).map(word=>word.id)))],
+    seenLessons:[...new Set(p.seenLessons.filter(id=>lessonIds.has(id)))],
+    knownVerbs:[...new Set(p.knownVerbs.filter(id=>verbIds.has(id)))],
+    savedPhrases:[...new Set(p.savedPhrases.filter(id=>phraseIds.has(id)))],
+    bestScore:p.bestScore,lastVisit:p.lastVisit||null,streak:p.streak,
+    theme:prefs.theme,studyDays:validStudyDays(prefs.studyDays),reduceMotion:prefs.reduceMotion
+  };
+  applyPreferences();
+  if(!persist()){state=previous;applyPreferences();return false;}
+  updateStreak();updateProgress();renderWords();renderGrammar();renderVerbs();renderPhrases();renderQuiz();renderSettings();
+  toast("Sauvegarde restaurée : tes progrès sont revenus.");
+  return true;
+}
 function initSettings(){
   $("#themeSelect").addEventListener("change",event=>{state.theme=themes.includes(event.target.value)?event.target.value:"clair";applyPreferences();persist();});
   $("#reduceMotion").addEventListener("change",event=>{state.reduceMotion=event.target.checked;applyPreferences();persist();});
   $("#studyDays").addEventListener("change",event=>{if(!event.target.matches('[name="study-day"]'))return;const selected=$$('[name="study-day"]:checked').map(input=>Number(input.value));if(!selected.length){event.target.checked=true;toast("Garde au moins un jour choisi.");return;}state.studyDays=validStudyDays(selected);persist();renderSettings();});
   $("#resetSettings").addEventListener("click",()=>{state.theme="clair";state.studyDays=[1,2,3,4,5];state.reduceMotion=false;applyPreferences();persist();renderSettings();toast("Tes réglages sont revenus aux valeurs de départ.")});
-  $("#exportProgress").addEventListener("click",()=>{const data={site:"Anglais sans délai",exportedAt:new Date().toISOString(),progress:{knownWords:state.knownWords,seenLessons:state.seenLessons,knownVerbs:state.knownVerbs,savedPhrases:state.savedPhrases,bestScore:state.bestScore,streak:state.streak},preferences:{theme:state.theme,studyDays:state.studyDays,reduceMotion:state.reduceMotion}};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download="anglais-sans-delai-progres.json";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("Copie de tes progrès téléchargée.")});
+  $("#exportProgress").addEventListener("click",()=>{const data={site:"Anglais sans délai",exportedAt:new Date().toISOString(),progress:{knownWords:state.knownWords,seenLessons:state.seenLessons,knownVerbs:state.knownVerbs,savedPhrases:state.savedPhrases,bestScore:state.bestScore,lastVisit:state.lastVisit,streak:state.streak},preferences:{theme:state.theme,studyDays:state.studyDays,reduceMotion:state.reduceMotion}};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download="anglais-sans-delai-progres.json";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("Copie de tes progrès téléchargée.")});
+  const importFile=$("#importProgressFile");
+  $("#importProgress").addEventListener("click",()=>importFile.click());
+  importFile.addEventListener("change",async event=>{
+    const file=event.target.files?.[0];event.target.value="";
+    if(!file)return;
+    if(file.size>1000000){toast("Ce fichier est trop volumineux pour une sauvegarde.");return;}
+    try{
+      const data=JSON.parse(await file.text());
+      if(!validProgressBackup(data)){toast("Ce fichier ne ressemble pas à une sauvegarde valide.");return;}
+      if(!confirm("Remplacer les progrès et réglages actuels par cette sauvegarde ?"))return;
+      if(!restoreProgress(data))toast("Le navigateur n’a pas pu enregistrer les progrès restaurés.");
+    }catch{toast("Impossible de lire cette sauvegarde JSON.");}
+  });
   renderSettings();
 }
 function wordOfDayIndex(date=new Date()){const today=Date.UTC(date.getFullYear(),date.getMonth(),date.getDate()),yearStart=Date.UTC(date.getFullYear(),0,1);return Math.floor((today-yearStart)/86400000)%words.length}

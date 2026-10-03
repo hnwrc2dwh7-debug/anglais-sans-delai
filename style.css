@@ -33,6 +33,8 @@
 .day-picker input:focus-visible+span{outline:3px solid #ffad6c;outline-offset:2px}
 .setting-summary{min-height:17px;margin:0;color:var(--ink);font-size:11px;font-weight:700}
 .setting-note{font-size:10px;color:var(--muted);line-height:1.45;margin:0}
+.backup-actions{display:flex;flex-wrap:wrap;gap:9px}
+.backup-actions .setting-note{flex-basis:100%}
 :root[data-theme="lavande"]{--paper:#f4f0ff;--violet:#684bc0;--violet-pale:#eee8ff;--line:#e6def6;--coral:#ec836b}
 :root[data-theme="lavande"] .hero{background:linear-gradient(112deg,#6740bf,#9578e8)}
 :root[data-theme="ocean"]{--paper:#f0f8fa;--violet:#167f9b;--violet-pale:#e0f3f7;--mint:#d9f1e9;--line:#dce9ec;--coral:#eb806b}
