@@ -41,6 +41,193 @@
     updateProgress();
   }
 
+  const extraLessons = [
+    {
+      id:"personal-pronouns",topic:"Construire ses phrases",level:"Débutant",
+      name:"Pronoms personnels et possessifs",
+      lead:"La forme du pronom change selon qu’il fait l’action, la reçoit ou indique à qui appartient une chose.",
+      form:"Sujet : I / he · complément : me / him · adjectif possessif : my / his · pronom possessif : mine / his",
+      examples:[["She knows me.","Elle me connaît."],["This is my coat. It’s mine.","C’est mon manteau. Il est à moi."],["They gave him their address.","Ils lui ont donné leur adresse."]],
+      uses:["Le pronom sujet précède généralement le verbe.","Le pronom complément suit un verbe ou une préposition.","my / your / his précèdent un nom; mine / yours / his remplacent le nom."],
+      trap:"Ne confonds pas he et him, ni my et mine : « This is my book » mais « This book is mine ».",
+      memory:"Imagine trois places : celui qui agit, celui qui reçoit, puis l’étiquette de propriété."
+    },
+    {
+      id:"negatives-do-be",topic:"Construire ses phrases",level:"Débutant",
+      name:"Faire une phrase négative",
+      lead:"Be se nie directement; avec la plupart des autres verbes, do porte la négation.",
+      form:"be + not · do / does / did + not + verbe de base",
+      examples:[["I’m not tired.","Je ne suis pas fatigué(e)."],["She doesn’t play tennis.","Elle ne joue pas au tennis."],["We didn’t see the sign.","Nous n’avons pas vu le panneau."]],
+      uses:["Au présent : don’t, ou doesn’t avec he / she / it.","Au passé : didn’t pour toutes les personnes.","Après do / does / did, le verbe reste à la base."],
+      trap:"Ne mets pas le verbe au passé après didn’t : « didn’t go », jamais « didn’t went ». Évite aussi la double négation.",
+      memory:"L’auxiliaire prend le travail de la négation; le verbe principal redevient simple."
+    },
+    {
+      id:"frequency-adverbs",topic:"Construire ses phrases",level:"Débutant",
+      name:"Adverbes de fréquence",
+      lead:"Ces mots indiquent à quelle fréquence une action se produit, de always à never.",
+      form:"Avant le verbe principal · après be · entre l’auxiliaire et le verbe",
+      examples:[["I often read before bed.","Je lis souvent avant de dormir."],["She is always kind.","Elle est toujours gentille."],["We have never tried sushi.","Nous n’avons jamais goûté les sushis."]],
+      uses:["Place généralement always, usually, often, sometimes avant le verbe principal.","Après be : « He is often busy ».","Avec un auxiliaire, place l’adverbe après celui-ci."],
+      trap:"L’adverbe ne se place généralement pas avant be : « She is always ready ».",
+      memory:"Be attire l’adverbe juste après lui; les autres verbes le placent avant."
+    },
+    {
+      id:"countable-uncountable",topic:"Construire ses phrases",level:"Débutant",
+      name:"Noms dénombrables et indénombrables",
+      lead:"On peut compter un nom dénombrable; un nom indénombrable se mesure ou se décrit comme une quantité.",
+      form:"a / an + nom singulier dénombrable · nombre + pluriel · quantité pour un indénombrable",
+      examples:[["an apple · two apples","une pomme · deux pommes"],["some water","de l’eau"],["a piece of advice","un conseil"]],
+      uses:["Les dénombrables ont un singulier et un pluriel.","Les indénombrables comme water, information et advice n’ont généralement pas de pluriel en anglais.","Utilise a piece of, a glass of ou a bit of pour compter une portion."],
+      trap:"On dit « some information » et « a piece of advice », pas « informations » ni « an advice ».",
+      memory:"Une pomme se compte à l’unité; l’eau se verse dans un récipient."
+    },
+    {
+      id:"quantifiers",topic:"Construire ses phrases",level:"Débutant",
+      name:"Quantités · some, any, much, many",
+      lead:"Le choix du quantifieur dépend du type de nom et du sens de la phrase.",
+      form:"many / a few + pluriel dénombrable · much / a little + indénombrable · some / any",
+      examples:[["How many tickets do we need?","De combien de billets avons-nous besoin ?"],["There isn’t much time.","Il ne reste pas beaucoup de temps."],["Would you like some tea?","Veux-tu du thé ?"]],
+      uses:["many accompagne les noms pluriels dénombrables; much accompagne les indénombrables.","some est courant dans les affirmations et les offres; any apparaît souvent dans les questions et les négations.","a few / a little signifient « quelques / un peu »; few / little insistent sur le manque."],
+      trap:"« How much apples? » est incorrect : apples se compte, donc « How many apples? ».",
+      memory:"Many compte des unités; much mesure une masse ou une quantité."
+    },
+    {
+      id:"place-movement-prepositions",topic:"Construire ses phrases",level:"Débutant",
+      name:"Prépositions de lieu et de déplacement",
+      lead:"Ces prépositions situent une chose ou décrivent un trajet.",
+      form:"in = dans · on = sur · at = point / lieu précis · into = vers l’intérieur · through = à travers",
+      examples:[["The keys are in the drawer.","Les clés sont dans le tiroir."],["Meet me at the entrance.","Retrouve-moi à l’entrée."],["We walked through the park.","Nous avons traversé le parc à pied."]],
+      uses:["in décrit souvent un espace contenant; on une surface; at un point précis.","into marque l’entrée dans un lieu; out of la sortie.","across signifie d’un côté à l’autre d’une surface."],
+      trap:"in indique souvent où l’on est; into indique un mouvement vers l’intérieur.",
+      memory:"Dessine une boîte : in est dedans, on est dessus, into est une flèche qui entre."
+    },
+    {
+      id:"comparatives-superlatives",topic:"Construire ses phrases",level:"Débutant",
+      name:"Comparatifs et superlatifs",
+      lead:"Le comparatif compare deux éléments; le superlatif distingue un élément dans un groupe.",
+      form:"adjectif court + -er / the + -est · more / the most + adjectif long",
+      examples:[["This road is shorter than the other one.","Cette route est plus courte que l’autre."],["It’s the most interesting book here.","C’est le livre le plus intéressant ici."],["Today is better than yesterday.","Aujourd’hui est meilleur qu’hier."]],
+      uses:["Ajoute souvent -er et -est aux adjectifs courts.","Utilise more et the most avec beaucoup d’adjectifs longs.","good devient better / the best; bad devient worse / the worst."],
+      trap:"Le comparatif utilise souvent than; le superlatif prend généralement the.",
+      memory:"Deux choses : -er. Le champion du groupe : the -est ou the most."
+    },
+    {
+      id:"adjectives-adverbs",topic:"Construire ses phrases",level:"Débutant",
+      name:"Adjectif ou adverbe ?",
+      lead:"L’adjectif décrit un nom; l’adverbe décrit souvent comment une action se déroule.",
+      form:"adjectif + nom · verbe + adverbe en -ly (souvent)",
+      examples:[["a careful driver","un conducteur prudent"],["She drives carefully.","Elle conduit prudemment."],["He speaks English well.","Il parle bien anglais."]],
+      uses:["Place souvent l’adjectif avant le nom.","L’adverbe répond souvent à « comment ? ».","good est un adjectif; well est son adverbe courant."],
+      trap:"Tous les adverbes ne finissent pas par -ly : fast reste fast, et well ne signifie pas good.",
+      memory:"Adjectif = portrait d’une chose; adverbe = manière de faire l’action."
+    },
+    {
+      id:"gerund-infinitive",topic:"Construire ses phrases",level:"Intermédiaire",
+      name:"Verbe en -ing ou infinitif avec to",
+      lead:"Le verbe qui suit dépend souvent du premier verbe; parfois le sens change.",
+      form:"enjoy / finish + verbe-ing · want / decide + to + base",
+      examples:[["I enjoy learning languages.","J’aime apprendre les langues."],["They decided to leave early.","Ils ont décidé de partir tôt."],["He stopped smoking.","Il a arrêté de fumer."]],
+      uses:["Après enjoy, avoid et finish, utilise généralement -ing.","Après want, hope et decide, utilise généralement to + base.","Avec stop, -ing signifie arrêter l’action; to + base signifie s’arrêter pour faire autre chose."],
+      trap:"Ne traduis pas mécaniquement le « de » ou le « à » français : apprends le modèle du verbe anglais.",
+      memory:"Chaque verbe pilote sa suite : certains demandent -ing, d’autres to."
+    },
+    {
+      id:"relative-clauses",topic:"Construire ses phrases",level:"Intermédiaire",
+      name:"Propositions relatives · who, which, that",
+      lead:"Une proposition relative ajoute une précision sur une personne, une chose ou un lieu.",
+      form:"personne : who · chose : which / that · lieu : where · possession : whose",
+      examples:[["The woman who called is my aunt.","La femme qui a appelé est ma tante."],["This is the film that I told you about.","Voici le film dont je t’ai parlé."],["That’s the café where we met.","C’est le café où nous nous sommes rencontrés."]],
+      uses:["who renvoie généralement à une personne.","which renvoie à une chose; that peut remplacer who ou which dans une relative définissante.","where indique un lieu; whose marque la possession."],
+      trap:"Dans « the woman who called », who est le sujet du verbe called; ne le répète pas avec she.",
+      memory:"Le pronom relatif accroche une précision au nom qui le précède."
+    },
+    {
+      id:"linking-words",topic:"Construire ses phrases",level:"Intermédiaire",
+      name:"Relier ses idées",
+      lead:"Les mots de liaison montrent si les idées s’ajoutent, s’opposent, expliquent une cause ou donnent un résultat.",
+      form:"and = ajout · but / although = opposition · because = cause · so = résultat",
+      examples:[["I stayed home because I was ill.","Je suis resté(e) à la maison parce que j’étais malade."],["Although it was cold, we went out.","Même s’il faisait froid, nous sommes sortis."],["It was raining, so we took a taxi.","Il pleuvait, alors nous avons pris un taxi."]],
+      uses:["because introduit une cause.","so introduit une conséquence.","although introduit une opposition; however relie souvent deux phrases."],
+      trap:"Évite « Although it was cold, but we went out » : although et but ne s’emploient pas ensemble ainsi.",
+      memory:"Demande-toi si tu ajoutes, opposes, expliques ou conclus."
+    },
+    {
+      id:"present-perfect-past-simple",topic:"Construire ses phrases",level:"Intermédiaire",
+      name:"Present perfect ou past simple ?",
+      lead:"Le past simple situe un événement dans une période terminée; le present perfect le relie à maintenant.",
+      form:"past simple + repère passé terminé · have / has + participe passé + lien avec le présent",
+      examples:[["I saw her yesterday.","Je l’ai vue hier."],["I’ve seen this film before.","J’ai déjà vu ce film."],["Have you finished yet?","As-tu déjà terminé ?"]],
+      uses:["Hier, en 2022, last week : période terminée, donc past simple.","Expérience, résultat actuel ou période encore ouverte : present perfect.","ever, never, just, already et yet accompagnent souvent le present perfect."],
+      trap:"Avec yesterday, utilise le past simple, pas le present perfect.",
+      memory:"Si l’horloge du récit est arrêtée dans le passé, choisis le past simple; si le lien avec maintenant compte, choisis le present perfect."
+    },
+    {
+      id:"phrasal-verbs",topic:"Construire ses phrases",level:"Intermédiaire",
+      name:"Verbes à particule · phrasal verbs",
+      lead:"Un verbe associé à une particule peut prendre un sens nouveau, parfois impossible à deviner mot à mot.",
+      form:"verbe + particule : get up · look after · turn off",
+      examples:[["I get up at seven.","Je me lève à sept heures."],["She looks after her brother.","Elle s’occupe de son frère."],["Turn the lights off. / Turn them off.","Éteins les lumières."]],
+      uses:["Apprends chaque expression avec une phrase et son contexte.","Certains phrasal verbs sont séparables : turn the radio off / turn it off.","D’autres ne se séparent pas : look after the child."],
+      trap:"Avec un pronom objet, un phrasal verb séparable place généralement le pronom au milieu : « turn it off ».",
+      memory:"La particule est une petite pièce qui peut transformer le sens du verbe."
+    },
+    {
+      id:"mixed-conditionals",topic:"Conditionnels",level:"Avancé",
+      name:"Conditionnels mixtes",
+      lead:"Un conditionnel mixte relie une condition passée à un résultat présent, ou une situation présente à un résultat passé.",
+      form:"If + past perfect, would + base (résultat présent) · If + past simple, would have + participe passé",
+      examples:[["If I had taken a map, I wouldn’t be lost now.","Si j’avais pris une carte, je ne serais pas perdu(e) maintenant."],["If she were more careful, she wouldn’t have made that mistake.","Si elle était plus prudente, elle n’aurait pas fait cette erreur."]],
+      uses:["Utilise la première structure pour imaginer un autre passé et son effet actuel.","Utilise la seconde pour relier un état présent à un résultat passé imaginaire."],
+      trap:"Les deux parties peuvent avoir des temps différents : choisis chaque forme selon le moment qu’elle décrit.",
+      memory:"Trace une flèche entre la condition et le résultat : ils ne se trouvent pas toujours au même moment."
+    },
+    {
+      id:"stative-verbs",topic:"Construire ses phrases",level:"Intermédiaire",
+      name:"Verbes d’état et formes continues",
+      lead:"Certains verbes décrivent un état plutôt qu’une action et s’emploient généralement au simple.",
+      form:"I know · I like · I believe · I own (plutôt que be + -ing)",
+      examples:[["I know the answer.","Je connais la réponse."],["She likes this song.","Elle aime cette chanson."],["I’m thinking about your idea.","Je réfléchis à ton idée."]],
+      uses:["Les verbes d’opinion, de possession et de sentiment sont souvent des verbes d’état.","think, have, see et taste peuvent aussi décrire une action selon le contexte.","Pour une action temporaire, la forme continue peut être correcte : I’m having lunch."],
+      trap:"« I’m knowing » est généralement incorrect pour dire « je sais ».",
+      memory:"Un état décrit une situation; une action se déroule et peut souvent être filmée."
+    },
+    {
+      id:"indirect-questions",topic:"Construire ses phrases",level:"Intermédiaire",
+      name:"Questions indirectes et polies",
+      lead:"Dans une question indirecte, les mots qui suivent l’introduction reprennent l’ordre d’une phrase affirmative.",
+      form:"Could you tell me + mot interrogatif + sujet + verbe ?",
+      examples:[["Where is the station?","Où est la gare ?"],["Could you tell me where the station is?","Pourriez-vous me dire où se trouve la gare ?"],["Do you know what time the shop opens?","Savez-vous à quelle heure le magasin ouvre ?"]],
+      uses:["Utilise ces formes pour poser une question plus poliment.","Après Could you tell me… ou Do you know…, garde l’ordre sujet + verbe.","Si la réponse attendue est oui ou non, utilise if ou whether."],
+      trap:"Ne garde pas l’inversion dans la subordonnée : « where the station is », pas « where is the station ».",
+      memory:"Une question dans une question retrouve l’ordre normal d’une phrase."
+    }
+  ];
+  extraLessons.forEach(lesson => {
+    if (!grammar.some(item => item.id === lesson.id)) grammar.push(lesson);
+  });
+
+  grammarQuestions.push(
+    {q:"I can’t find my keys. Have you seen ___?",a:"them",opts:["them","they","their","theirs"],why:"Après seen, il faut le pronom complément them."},
+    {q:"She ___ like coffee.",a:"doesn’t",opts:["doesn’t","don’t","isn’t","didn’t"],why:"Au présent, he / she / it utilise doesn’t, suivi du verbe de base."},
+    {q:"He is ___ late for class.",a:"often",opts:["often","quick","yesterday","since"],why:"Often est un adverbe de fréquence; avec be, il se place après le verbe."},
+    {q:"How ___ apples do we need?",a:"many",opts:["many","much","little","any"],why:"Apples est un nom pluriel dénombrable : on demande how many."},
+    {q:"There isn’t ___ milk left.",a:"much",opts:["much","many","few","several"],why:"Milk est indénombrable : much convient ici."},
+    {q:"The cat jumped ___ the box.",a:"into",opts:["into","at","on","between"],why:"Into décrit le mouvement qui fait entrer dans la boîte."},
+    {q:"This exercise is ___ than the last one.",a:"easier",opts:["easier","easiest","more easy","the easier"],why:"Easy forme son comparatif en -ier : easier than."},
+    {q:"She drives very ___.",a:"carefully",opts:["carefully","careful","care","more careful"],why:"Carefully est l’adverbe qui décrit la manière de conduire."},
+    {q:"They enjoy ___ together.",a:"cooking",opts:["cooking","to cook","cook","cooked"],why:"Enjoy est suivi d’un verbe en -ing."},
+    {q:"The person ___ lives next door is a doctor.",a:"who",opts:["who","where","whose","when"],why:"Who introduit ici une relative qui décrit une personne."},
+    {q:"It was raining, ___ we stayed inside.",a:"so",opts:["so","because","although","unless"],why:"So introduit le résultat : nous sommes restés à l’intérieur."},
+    {q:"I ___ her yesterday.",a:"saw",opts:["saw","have seen","see","had saw"],why:"Yesterday situe l’action dans une période passée terminée : past simple."},
+    {q:"Please ___ the lights before you leave.",a:"turn off",opts:["turn off","look after","get up","take after"],why:"Turn off signifie éteindre; le contexte parle des lumières."},
+    {q:"If I had taken a map, I ___ lost now.",a:"wouldn’t be",opts:["wouldn’t be","won’t be","wouldn’t have been","am not"],why:"La condition passée a un résultat au présent : conditionnel mixte."},
+    {q:"Choisis la forme naturelle : « Je connais la réponse. »",a:"I know the answer.",opts:["I know the answer.","I’m knowing the answer.","I knew the answer tomorrow.","I do knowing the answer."],why:"Know décrit généralement un état et s’emploie au simple."},
+    {q:"Could you tell me where the station ___?",a:"is",opts:["is","is it","does it","it is?"],why:"Une question indirecte garde l’ordre sujet + verbe : the station is."}
+  );
+  updateProgress();
+  renderGrammar();
+
   const roadmap = document.querySelector("#tenseGrid");
   roadmap.innerHTML = tenseIds.map(id => {
     const lesson = grammar.find(item => item.id === id);
