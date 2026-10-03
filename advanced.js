@@ -26,9 +26,9 @@
       lead: "Une activité aura commencé avant un repère futur et aura duré jusqu’à ce repère.",
       form: "will + have been + verbe-ing",
       examples: [
-        ["By June, I’ll have been learning English for two years.", "En juin, cela fera deux ans que j’apprendrai l’anglais."],
-        ["Next month, she’ll have been working here for a decade.", "Le mois prochain, cela fera dix ans qu’elle travaillera ici."],
-        ["How long will you have been travelling by then?", "Depuis combien de temps voyageras-tu à ce moment-là ?"]
+        ["By June, I’ll have been learning English for two years.", "En juin, cela fera deux ans que j’étudie l’anglais."],
+        ["Next month, she’ll have been working here for a decade.", "Le mois prochain, cela fera dix ans qu’elle travaille ici."],
+        ["How long will you have been travelling by then?", "À ce moment-là, cela fera combien de temps que tu voyages ?"]
       ],
       uses: [
         "Insister sur la durée d’une activité jusqu’à un repère futur : by June, for two years.",
