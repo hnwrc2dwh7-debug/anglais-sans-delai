@@ -16,7 +16,7 @@ const groups = [
   {id:"everyday",title:"Temps & quotidien",emoji:"🗓️",words:[
     ["yesterday","hier","I saw her yesterday. · Je l’ai vue hier."],["tomorrow","demain","We’re leaving tomorrow. · Nous partons demain."],["last week","la semaine dernière","I was ill last week. · J’étais malade la semaine dernière."],["next month","le mois prochain","They’re moving next month. · Ils déménagent le mois prochain."],["early","tôt / en avance","We arrived early. · Nous sommes arrivés en avance."],["late","tard / en retard","Sorry I’m late. · Désolé, je suis en retard."],["often","souvent","How often do you exercise? · À quelle fréquence fais-tu du sport ?"],["rarely","rarement","He rarely watches TV. · Il regarde rarement la télé."],["once","une fois","I’ve been there once. · J’y suis allé une fois."],["twice","deux fois","She called me twice. · Elle m’a appelé deux fois."],["at the moment","en ce moment","I’m studying at the moment. · J’étudie en ce moment."],["in a hurry","pressé(e)","I’m in a hurry. · Je suis pressé."]]}
 ];
-const words = groups.flatMap(g=>g.words.map(w=>({id:w[0].toLowerCase().replace(/[^a-z0-9]+/g,"-"),en:w[0],fr:w[1],example:w[2],topic:g.id,topicName:g.title})));
+const words = groups.flatMap(g=>g.words.map(w=>{const legacyId=w[0].toLowerCase().replace(/[^a-z0-9]+/g,"-");return{id:g.id+"-"+legacyId,legacyId,en:w[0],fr:w[1],example:w[2],topic:g.id,topicName:g.title}}));
 
 const grammar = [
   {id:"present-simple",topic:"Présent",level:"Débutant",name:"Présent simple · Present simple",lead:"Une habitude, un fait général ou une chose qui est vraie en général.",form:"Sujet + verbe de base (he / she / it : souvent + s)",examples:[["I walk to school every day.","Je vais à l’école à pied tous les jours."],["She works in a hospital.","Elle travaille dans un hôpital."],["Water boils at 100°C.","L’eau bout à 100 °C."]],uses:["Habitudes et routines : souvent avec always, usually, often, every day.","Faits et vérités générales.","Horaires officiels : The train leaves at six."],trap:"À he / she / it, pense au -s : She likes, he goes. Pour une question, le -s revient sur does : Does she like…?",memory:"Imagine le présent simple comme une horloge qui tourne : les choses reviennent, encore et encore."},
@@ -76,20 +76,26 @@ const sounds=[
 ];
 
 const stateKey="anglais-sans-blocage-state-v1";
-const freshState=()=>({knownWords:[],seenLessons:[],knownVerbs:[],savedPhrases:[],bestScore:null,lastVisit:null,streak:0});
+const studyDayLabels=[[1,"Lundi"],[2,"Mardi"],[3,"Mercredi"],[4,"Jeudi"],[5,"Vendredi"],[6,"Samedi"],[0,"Dimanche"]];
+const validStudyDays=value=>{const days=Array.isArray(value)?[...new Set(value.filter(day=>Number.isInteger(day)&&day>=0&&day<=6))].sort((a,b)=>a-b):[];return days.length?days:[1,2,3,4,5]};
+const themes=["clair","lavande","ocean","nuit"];
+const freshState=()=>({knownWords:[],seenLessons:[],knownVerbs:[],savedPhrases:[],bestScore:null,lastVisit:null,streak:0,theme:"clair",studyDays:[1,2,3,4,5],reduceMotion:false});
 const validIds=value=>Array.isArray(value)?[...new Set(value.filter(item=>typeof item==="string"))]:[];
 let state=freshState();
 try{
   const saved=JSON.parse(localStorage.getItem(stateKey)||"null");
   if(saved&&typeof saved==="object"&&!Array.isArray(saved))state={
     ...freshState(),
-    knownWords:validIds(saved.knownWords),
+    knownWords:[...new Set(validIds(saved.knownWords).flatMap(id=>{const matches=words.filter(word=>word.legacyId===id).map(word=>word.id);return matches.length?matches:[id]}))],
     seenLessons:validIds(saved.seenLessons),
     knownVerbs:validIds(saved.knownVerbs),
     savedPhrases:validIds(saved.savedPhrases),
     bestScore:Number.isInteger(saved.bestScore)&&saved.bestScore>=0&&saved.bestScore<=10?saved.bestScore:null,
     lastVisit:typeof saved.lastVisit==="string"?saved.lastVisit:null,
-    streak:Number.isInteger(saved.streak)&&saved.streak>=0?saved.streak:0
+    streak:Number.isInteger(saved.streak)&&saved.streak>=0?saved.streak:0,
+    theme:themes.includes(saved.theme)?saved.theme:"clair",
+    studyDays:validStudyDays(saved.studyDays),
+    reduceMotion:saved.reduceMotion===true
   };
 }catch{}
 function persist(){try{localStorage.setItem(stateKey,JSON.stringify(state))}catch{toast("Le navigateur n’a pas pu enregistrer les progrès.")}}
@@ -97,8 +103,8 @@ const $=s=>document.querySelector(s), $$=s=>Array.from(document.querySelectorAll
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const ids=arr=>new Set(arr);
 function toast(msg){const t=$("#toast");if(!t)return;t.textContent=msg;t.classList.add("show");clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove("show"),2100)}
-const viewNames={home:"Aujourd’hui",words:"Vocabulaire",grammar:"Grammaire & temps",verbs:"Verbes irréguliers",speak:"Phrases utiles",sounds:"Prononciation",quiz:"Quiz & défis"};
-function show(view){if(!viewNames[view])return;$$('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+view));$$('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));$('#crumb').textContent=viewNames[view];history.replaceState(null,"","#"+view);window.scrollTo({top:0,behavior:"smooth"});if(view==="words")renderWords();if(view==="grammar")renderGrammar();if(view==="verbs")renderVerbs();if(view==="speak")renderPhrases();if(view==="sounds")renderSounds();if(view==="quiz")renderQuiz();}
+const viewNames={home:"Aujourd’hui",words:"Vocabulaire",grammar:"Grammaire & temps",verbs:"Verbes irréguliers",speak:"Phrases utiles",sounds:"Prononciation",quiz:"Quiz & défis",settings:"Réglages"};
+function show(view){if(!viewNames[view])return;$$('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+view));$$('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===view));$('#crumb').textContent=viewNames[view];history.replaceState(null,"","#"+view);window.scrollTo({top:0,behavior:"smooth"});if(view==="words")renderWords();if(view==="grammar")renderGrammar();if(view==="verbs")renderVerbs();if(view==="speak")renderPhrases();if(view==="sounds")renderSounds();if(view==="quiz")renderQuiz();if(view==="settings")renderSettings();}
 document.addEventListener('click',e=>{const nav=e.target.closest('[data-view]'),go=e.target.closest('[data-go]');if(nav)show(nav.dataset.view);if(go)show(go.dataset.go);});
 
 let wordIndex=0,wordShowAnswer=false,wordQuery="",wordTopic="all";
@@ -161,7 +167,8 @@ function makeQuiz(){
     opts:makeQuizOptions([word.en],words.filter(item=>item.id!==word.id).map(item=>item.en)),
     why:`${word.en} signifie « ${word.fr} ». Exemple : ${word.example}`
   });
-  for(const verb of shuffle(verbs).slice(0,3)){
+  const uniqueQuizVerbs=[...new Map(verbs.map(verb=>[verb.base.toLowerCase(),verb])).values()];
+  for(const verb of shuffle(uniqueQuizVerbs).slice(0,3)){
     const answers=verbForms(verb.past);
     questions.push({
       kind:"Verbes",q:`Quel est le prétérit de ‘${verb.base}’ (${verb.fr}) ?`,a:answers[0],answers,
@@ -220,7 +227,24 @@ $("#quizBox").addEventListener("click",event=>{
 });
 function updateProgress(){const total=grammar.length,seen=state.seenLessons.length,known=state.knownWords.length;$("#progressText").textContent=`${seen} / ${total}`;$("#knownText").textContent=`${known} mot${known===1?"":"s"}`;$("#progressBar").style.width=`${Math.min(100,seen/total*100)}%`;$("#progressMood").textContent=seen===0?"À toi de jouer":seen<5?"Bon départ !":seen<12?"Tu avances bien":"Belle régularité !";}
 function updateStreak(){const dateKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}`;const now=new Date(),today=dateKey(now);if(state.lastVisit!==today){const y=new Date(now);y.setDate(y.getDate()-1);state.streak=state.lastVisit===dateKey(y)?Math.max(1,state.streak+1):1;state.lastVisit=today;persist()}$("#streak").textContent=`${state.streak||1} jour${(state.streak||1)>1?"s":""} de suite`}
+
+function applyPreferences(){document.documentElement.dataset.theme=state.theme;document.documentElement.dataset.reduceMotion=String(state.reduceMotion);const color={clair:"#f8f7f2",lavande:"#f4f0ff",ocean:"#f0f8fa",nuit:"#171725"}[state.theme];$("#themeColor").content=color;}
+function renderSettings(){
+  $("#themeSelect").value=state.theme;
+  $("#reduceMotion").checked=state.reduceMotion;
+  $$('[name="study-day"]').forEach(input=>input.checked=state.studyDays.includes(Number(input.value)));
+  const today=new Date().getDay(),selected=state.studyDays.map(day=>studyDayLabels.find(([id])=>id===day)?.[1]).filter(Boolean);
+  $("#studyDaySummary").textContent=selected.length?"Tes jours : "+selected.join(", ")+". "+(state.studyDays.includes(today)?"Aujourd’hui est un jour choisi.":"Aujourd’hui est un jour libre."):"Choisis au moins un jour.";
+}
+function initSettings(){
+  $("#themeSelect").addEventListener("change",event=>{state.theme=themes.includes(event.target.value)?event.target.value:"clair";applyPreferences();persist();});
+  $("#reduceMotion").addEventListener("change",event=>{state.reduceMotion=event.target.checked;applyPreferences();persist();});
+  $("#studyDays").addEventListener("change",event=>{if(!event.target.matches('[name="study-day"]'))return;const selected=$$('[name="study-day"]:checked').map(input=>Number(input.value));if(!selected.length){event.target.checked=true;toast("Garde au moins un jour choisi.");return;}state.studyDays=validStudyDays(selected);persist();renderSettings();});
+  $("#resetSettings").addEventListener("click",()=>{state.theme="clair";state.studyDays=[1,2,3,4,5];state.reduceMotion=false;applyPreferences();persist();renderSettings();toast("Tes réglages sont revenus aux valeurs de départ.")});
+  $("#exportProgress").addEventListener("click",()=>{const data={site:"Anglais sans délai",exportedAt:new Date().toISOString(),progress:{knownWords:state.knownWords,seenLessons:state.seenLessons,knownVerbs:state.knownVerbs,savedPhrases:state.savedPhrases,bestScore:state.bestScore,streak:state.streak},preferences:{theme:state.theme,studyDays:state.studyDays,reduceMotion:state.reduceMotion}};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download="anglais-sans-delai-progres.json";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("Copie de tes progrès téléchargée.")});
+  renderSettings();
+}
 function updateWordOfDay(){const w=words[new Date().getDate()%words.length];$("#wordOfDay").textContent=w.en;$("#wordOfDayFr").textContent=w.fr;$("#wordOfDayExample").textContent=w.example;$("#wordOfDayCount").textContent="À retenir"}
-$("#resetProgress").addEventListener("click",()=>{if(confirm("Effacer les mots retenus, les leçons vues et le meilleur score sur cet appareil ?")){state=freshState();persist();updateStreak();updateProgress();renderWords();renderVerbs();renderPhrases();toast("Tes progrès ont été effacés.")}});
-function init(){initWordControls();initGrammarTopics();initVerbControls();initPhraseControls();updateStreak();updateProgress();updateWordOfDay();renderWords();renderGrammar();renderVerbs();renderPhrases();renderSounds();renderQuiz();const hash=location.hash.slice(1);if(viewNames[hash])show(hash);if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{})}
+$("#resetProgress").addEventListener("click",()=>{if(confirm("Effacer les mots retenus, les leçons vues et le meilleur score sur cet appareil ?")){const preferences={theme:state.theme,studyDays:state.studyDays,reduceMotion:state.reduceMotion};state={...freshState(),...preferences};persist();updateStreak();updateProgress();renderWords();renderVerbs();renderPhrases();renderSettings();toast("Tes progrès ont été effacés.")}});
+function init(){applyPreferences();initWordControls();initGrammarTopics();initVerbControls();initPhraseControls();initSettings();updateStreak();updateProgress();updateWordOfDay();renderWords();renderGrammar();renderVerbs();renderPhrases();renderSounds();renderQuiz();const hash=location.hash.slice(1);if(viewNames[hash])show(hash);if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{})}
 init();

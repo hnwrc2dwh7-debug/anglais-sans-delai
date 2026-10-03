@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="theme-color" content="#f8f7f2">
+  <meta id="themeColor" name="theme-color" content="#f8f7f2">
   <meta name="description" content="Un cours interactif d’anglais du débutant à l’avancé : vocabulaire, 12 formes de temps, conjugaison des verbes, phrases utiles, prononciation et quiz, sans compte ni IA." />
   <meta property="og:title" content="Anglais sans délai — le cours interactif complet" />
   <meta property="og:description" content="Vocabulaire, grammaire, conjugaison dans les 12 formes, phrases et prononciation. Gratuit, sans compte, utilisable à son rythme." />
@@ -26,6 +26,7 @@
       <button data-view="speak"><span class="ico">☏</span>Phrases utiles</button>
       <button data-view="sounds"><span class="ico">♫</span>Prononciation</button>
       <button data-view="quiz"><span class="ico">✎</span>Quiz & défis</button>
+      <button data-view="settings"><span class="ico">⚙</span>Réglages</button>
     </nav></div>
     <div class="side-note"><strong>🌱 À ton rythme</strong>Pas de compte, pas d’IA : tes favoris et tes progrès restent sur cet appareil.</div>
     <div class="side-foot">Fait pour apprendre, pas pour bachoter.</div>
@@ -53,9 +54,25 @@
     <section class="view" id="view-speak" aria-labelledby="speakTitle"><div class="greet"><div><div class="eyebrow dark-eyebrow">DES MOTS POUR LA VRAIE VIE</div><h1 id="speakTitle">Trouver ses mots, situation par situation ☏</h1><p>Des expressions naturelles, avec leur traduction et une façon de les prononcer.</p></div></div><div class="toolbar"><label class="search"><span>⌕</span><input id="phraseSearch" type="search" placeholder="Chercher une phrase…" aria-label="Chercher une phrase"></label><label class="select-wrap"><span class="sr-only">Situation</span><select id="phraseTopic"></select></label></div><div class="phrase-grid" id="phraseGrid"></div></section>
     <section class="view" id="view-sounds" aria-labelledby="soundsTitle"><div class="greet"><div><div class="eyebrow dark-eyebrow">OBSERVER · ARTICULER · S’ENTRAÎNER</div><h1 id="soundsTitle">Rendre les sons moins intimidants ♫</h1><p>Des repères écrits pour comprendre les sons anglais et t’entraîner à les prononcer. Les accents varient : ces exemples sont des points de départ.</p></div></div><div class="sound-grid" id="soundGrid"></div><div class="panel sound-exercise"><div><div class="eyebrow dark-eyebrow">PETIT EXERCICE</div><h2>Répéter pour entraîner la bouche</h2><p>1. Lis la phrase lentement. 2. Répète-la à voix haute. 3. Recommence en suivant le rythme des mots. 4. Cache l’exemple et redis-le sans regarder.</p><p><b>Phrase modèle :</b> <em>Could you say that again, please?</em><br><span>Peux-tu répéter, s’il te plaît ?</span></p></div><div class="sound-illustration" aria-hidden="true">“<span>th</span>”<i>♪</i></div></div></section>
     <section class="view" id="view-quiz" aria-labelledby="quizTitle"><div class="greet"><div><div class="eyebrow dark-eyebrow">SANS NOTE · JUSTE POUR FIXER LES IDÉES</div><h1 id="quizTitle">Un mini-défi ? ⚡</h1><p>Un mélange de mots, de verbes et de grammaire. La correction t’explique pourquoi.</p></div><div class="level" id="bestScore">Meilleur score : —</div></div><div class="quiz-shell panel" id="quizBox"></div><div class="quiz-note">Chaque essai est fabriqué à partir des leçons incluses dans cette page. Aucun compte ni service d’IA n’est utilisé.</div></section>
+    <section class="view" id="view-settings" aria-labelledby="settingsTitle">
+      <div class="greet"><div><div class="eyebrow dark-eyebrow">TON ESPACE · TES CHOIX</div><h1 id="settingsTitle">Réglages ⚙</h1><p>Personnalise l’apparence et choisis les jours où tu veux apprendre.</p></div></div>
+      <div class="settings-grid">
+        <section class="panel setting-panel"><div class="setting-heading"><span class="setting-icon">🎨</span><div><h2>Apparence</h2><p>Choisis une ambiance pour le site.</p></div></div>
+          <label class="setting-row" for="themeSelect"><span>Thème de couleurs</span><select id="themeSelect" class="setting-select"><option value="clair">Clair — violet</option><option value="lavande">Lavande</option><option value="ocean">Océan</option><option value="nuit">Nuit</option></select></label>
+          <label class="setting-toggle"><span><b>Réduire les animations</b><small>Pour une navigation plus calme.</small></span><input id="reduceMotion" type="checkbox"></label>
+        </section>
+        <section class="panel setting-panel"><div class="setting-heading"><span class="setting-icon">📅</span><div><h2>Mes jours d’anglais</h2><p>Un repère personnel, modifiable quand tu veux.</p></div></div>
+          <div class="day-picker" id="studyDays">
+            <label><input type="checkbox" name="study-day" value="1"><span>Lun</span></label><label><input type="checkbox" name="study-day" value="2"><span>Mar</span></label><label><input type="checkbox" name="study-day" value="3"><span>Mer</span></label><label><input type="checkbox" name="study-day" value="4"><span>Jeu</span></label><label><input type="checkbox" name="study-day" value="5"><span>Ven</span></label><label><input type="checkbox" name="study-day" value="6"><span>Sam</span></label><label><input type="checkbox" name="study-day" value="0"><span>Dim</span></label>
+          </div><p class="setting-summary" id="studyDaySummary" role="status" aria-live="polite"></p><p class="setting-note">Aucune notification n’est envoyée. Ces jours sont seulement un repère affiché ici.</p>
+        </section>
+        <section class="panel setting-panel"><div class="setting-heading"><span class="setting-icon">💾</span><div><h2>Garder une copie</h2><p>Télécharge une sauvegarde de tes progrès et réglages.</p></div></div><button class="soft-button" id="exportProgress" type="button">Télécharger mes progrès ↓</button></section>
+        <section class="panel setting-panel"><div class="setting-heading"><span class="setting-icon">↺</span><div><h2>Repartir des réglages de départ</h2><p>Les progrès appris ne seront pas effacés.</p></div></div><button class="soft-button" id="resetSettings" type="button">Réinitialiser mes réglages</button></section>
+      </div>
+    </section>
     <footer class="footer"><span>Anglais sans délai · Le contenu reste sur ton appareil.</span><button class="text-link" id="resetProgress">Effacer mes progrès</button></footer>
   </main>
-  <nav class="mobile-nav" aria-label="Navigation mobile"><button class="active" data-view="home"><span>⌂</span>Accueil</button><button data-view="words"><span>✳</span>Mots</button><button data-view="grammar"><span>◷</span>Temps</button><button data-view="verbs"><span>↗</span>Verbes</button><button data-view="speak"><span>☏</span>Phrases</button><button data-view="sounds"><span>♫</span>Sons</button><button data-view="quiz"><span>✎</span>Quiz</button></nav>
+  <nav class="mobile-nav" aria-label="Navigation mobile"><button class="active" data-view="home"><span>⌂</span>Accueil</button><button data-view="words"><span>✳</span>Mots</button><button data-view="grammar"><span>◷</span>Temps</button><button data-view="verbs"><span>↗</span>Verbes</button><button data-view="speak"><span>☏</span>Phrases</button><button data-view="sounds"><span>♫</span>Sons</button><button data-view="quiz"><span>✎</span>Quiz</button><button data-view="settings"><span>⚙</span>Réglages</button></nav>
 </div><div class="toast" id="toast" role="status" aria-live="polite"></div>
 </body>
 </html>

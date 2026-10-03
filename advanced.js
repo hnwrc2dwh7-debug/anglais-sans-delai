@@ -112,12 +112,7 @@
     ["spit","spat / spit","spat / spit","cracher"],["stink","stank / stunk","stunk","puer"],["thrive","thrived / throve","thrived / thriven","prospérer"]
   ];
   const firstForm = form => String(form).split("/")[0].trim();
-  const seen = new Set();
-  const unique = [];
-  verbs.forEach(verb => {
-    const key = verb.base.toLowerCase();
-    if (!seen.has(key)) { seen.add(key); unique.push(verb); }
-  });
+  const seen = new Set(verbs.map(verb => verb.base.toLowerCase()));
   const additions = [];
   irregularRows.forEach(([base, past, part, fr]) => {
     const key = base.toLowerCase();
@@ -125,7 +120,7 @@
     seen.add(key);
     additions.push({ base, past, part, fr, group: "extended", groupName: "Autres verbes fréquents" });
   });
-  verbs.splice(0, verbs.length, ...unique, ...additions);
+  verbs.push(...additions);
   verbGroups.push({
     id: "extended", title: "Autres verbes fréquents",
     verbs: additions.map(v => ({ base: v.base, past: v.past, part: v.part, fr: v.fr }))
@@ -248,8 +243,8 @@
       return;
     }
     const label = tenseLabels[tenseSelect.value];
-    output.innerHTML = `<div class="conjugator-title"><div><span>VERBE : <b>${verb}</b></span><h3>${label[0]} · ${label[1]}</h3></div><span class="conjugator-kind">${verbs.some(v => v.base.toLowerCase() === verb.split(" ")[0]) ? "forme irrégulière connue" : "règles régulières"}</span></div>
-      <div class="table-wrap"><table class="conjugation-table"><thead><tr><th>Personne</th><th>Affirmative</th><th>Négative</th><th>Question</th></tr></thead><tbody>${rows.map(row => `<tr><th scope="row">${row.label}</th><td>${row.affirmative}</td><td>${row.negative}</td><td>${row.question}</td></tr>`).join("")}</tbody></table></div>`;
+    output.innerHTML = `<div class="conjugator-title"><div><span>VERBE : <b>${esc(verb)}</b></span><h3>${label[0]} · ${label[1]}</h3></div><span class="conjugator-kind">${verbs.some(v => v.base.toLowerCase() === verb.split(" ")[0]) ? "forme irrégulière connue" : "règles régulières"}</span></div>
+      <div class="table-wrap"><table class="conjugation-table"><thead><tr><th>Personne</th><th>Affirmative</th><th>Négative</th><th>Question</th></tr></thead><tbody>${rows.map(row => `<tr><th scope="row">${esc(row.label)}</th><td>${esc(row.affirmative)}</td><td>${esc(row.negative)}</td><td>${esc(row.question)}</td></tr>`).join("")}</tbody></table></div>`;
     const enteredManual = pastInput.dataset.userEdited === "true" || partInput.dataset.userEdited === "true";
     const listed = verbs.some(v => v.base.toLowerCase() === verb.split(" ")[0]);
     status.textContent = enteredManual ? "Formes irrégulières personnalisées prises en compte." : listed ? "Formes irrégulières de la liste utilisées." : "Règles régulières appliquées. Si ce verbe est irrégulier, saisis ses deux formes.";
