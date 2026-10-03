@@ -64,3 +64,60 @@
 .home-share button:hover{background:var(--violet-pale);transform:translateY(-1px)}
 .home-share small{font-size:11px;color:var(--muted)}
 @media(max-width:440px){.home-share{align-items:flex-start;flex-direction:column;gap:6px}}
+
+/* La palette nuit garde des surfaces sombres et des textes lisibles dans toutes les vues. */
+:root[data-theme="nuit"]{color-scheme:dark;--surface-raised:#302e43;--surface-soft:#34314f;--text-soft:#c6c3d8;--text-dim:#b6b3c9}
+:root[data-theme="nuit"] .nav button{color:var(--text-dim)}
+:root[data-theme="nuit"] .nav button:hover,:root[data-theme="nuit"] .nav button.active{background:var(--violet-pale);color:var(--violet)}
+:root[data-theme="nuit"] .example,:root[data-theme="nuit"] .example em,:root[data-theme="nuit"] .hint-line,:root[data-theme="nuit"] .flash-meta,:root[data-theme="nuit"] .flash-ipa,:root[data-theme="nuit"] .flash-example,:root[data-theme="nuit"] .word-list button,:root[data-theme="nuit"] .topic-pills button,:root[data-theme="nuit"] .lesson-list button span,:root[data-theme="nuit"] .lesson-detail .lesson-lead,:root[data-theme="nuit"] .use-list,:root[data-theme="nuit"] .source-note,:root[data-theme="nuit"] .tip-card p,:root[data-theme="nuit"] .phrase-card p,:root[data-theme="nuit"] .phrase-phonetic,:root[data-theme="nuit"] .sound-card p,:root[data-theme="nuit"] .sound-exercise p,:root[data-theme="nuit"] .quiz-progress,:root[data-theme="nuit"] .quiz-note,:root[data-theme="nuit"] .time-visual,:root[data-theme="nuit"] .roadmap-heading>span,:root[data-theme="nuit"] .tense-card span,:root[data-theme="nuit"] .tense-card small,:root[data-theme="nuit"] .conjugator-fields label,:root[data-theme="nuit"] .conjugator-fields small,:root[data-theme="nuit"] .conjugator-title span,:root[data-theme="nuit"] .lab-note,:root[data-theme="nuit"] .home-share small,:root[data-theme="nuit"] .footer .text-link{color:var(--text-dim)}
+:root[data-theme="nuit"] .search{color:var(--text-dim)}
+:root[data-theme="nuit"] .search input::placeholder{color:#a7a4bd;opacity:1}
+:root[data-theme="nuit"] .select-wrap select{background-image:linear-gradient(45deg,transparent 50%,#b6b3c9 50%),linear-gradient(135deg,#b6b3c9 50%,transparent 50%)}
+:root[data-theme="nuit"] .example em,:root[data-theme="nuit"] .flash-example b,:root[data-theme="nuit"] .word-list button:hover,:root[data-theme="nuit"] .word-list button.selected,:root[data-theme="nuit"] .topic-pills button:hover,:root[data-theme="nuit"] .topic-pills button.active,:root[data-theme="nuit"] .source-note a{color:var(--violet)}
+:root[data-theme="nuit"] .flash-example{color:var(--text-dim)}
+:root[data-theme="nuit"] .flash-actions .soft-button,:root[data-theme="nuit"] .flash-actions .forget-button,:root[data-theme="nuit"] .home-share button{background:var(--surface-raised);border-color:var(--line);color:#d2ccff}
+:root[data-theme="nuit"] .flash-actions .remember-button{background:#6254bb;border-color:#8173df;color:#fff}
+:root[data-theme="nuit"] .word-list button:hover,:root[data-theme="nuit"] .word-list button.selected,:root[data-theme="nuit"] .topic-pills button:hover,:root[data-theme="nuit"] .topic-pills button.active{background:var(--surface-soft)}
+:root[data-theme="nuit"] .word-list button .known-dot{color:#72d7a1}
+:root[data-theme="nuit"] .lesson-list button.active,:root[data-theme="nuit"] .lesson-list button:hover{background:var(--surface-soft);border-color:#746bb5;color:var(--ink)}
+:root[data-theme="nuit"] .formula{background:var(--surface-soft);color:var(--ink)}
+:root[data-theme="nuit"] .formula b{color:#d0c9ff}
+:root[data-theme="nuit"] .example-line{background:#332d38;color:var(--ink)}
+:root[data-theme="nuit"] .example-line b{color:#c7bdff}
+:root[data-theme="nuit"] .memory-tip{background:#28483f;color:#d6eadf}
+:root[data-theme="nuit"] .memory-tip strong{color:#a9e9c0}
+:root[data-theme="nuit"] .source-note{background:var(--surface-raised)}
+:root[data-theme="nuit"] .tip-card{background:#3b3034;color:var(--ink)}
+:root[data-theme="nuit"] .tip-card em{color:#c7bdff}
+:root[data-theme="nuit"] .time-visual b{background:#28483f;color:#a9e9c0}
+:root[data-theme="nuit"] .table-wrap th{background:var(--surface-raised);color:var(--text-dim)}
+:root[data-theme="nuit"] .table-wrap th,:root[data-theme="nuit"] .table-wrap td{border-color:var(--line)}
+:root[data-theme="nuit"] .table-wrap td{color:var(--ink)}
+:root[data-theme="nuit"] .table-wrap td:first-child{color:#d2ccff}
+:root[data-theme="nuit"] tbody tr:hover{background:var(--surface-soft)}
+:root[data-theme="nuit"] .conjugation-table tbody th{background:var(--surface-raised);color:var(--ink)}
+:root[data-theme="nuit"] .verb-known{background:var(--surface-soft);color:#d2ccff}
+:root[data-theme="nuit"] .verb-known.done{background:#28483f;color:#a9e9c0}
+:root[data-theme="nuit"] .phrase-card .context{background:var(--surface-raised);color:var(--text-dim)}
+:root[data-theme="nuit"] .phrase-tools button{background:var(--surface-soft);color:#d2ccff}
+:root[data-theme="nuit"] .phrase-tools button.saved{background:#51342f;color:#ffb5a4}
+:root[data-theme="nuit"] .sound-symbol{background:var(--surface-soft);color:#d2ccff}
+:root[data-theme="nuit"] .sound-examples{background:var(--surface-raised);color:var(--ink)}
+:root[data-theme="nuit"] .quiz-bar{background:var(--surface-soft)}
+:root[data-theme="nuit"] .quiz-options button:hover:not(:disabled){background:var(--surface-soft);border-color:#746bb5;color:var(--ink)}
+:root[data-theme="nuit"] .quiz-options button.correct{background:#28483f;border-color:#4b9b6d;color:#c3f0d1}
+:root[data-theme="nuit"] .quiz-options button.wrong{background:#51342f;border-color:#a76555;color:#ffd0c4}
+:root[data-theme="nuit"] .quiz-feedback{background:var(--surface-raised);color:var(--text-dim)}
+:root[data-theme="nuit"] .quiz-feedback.good{background:#28483f;color:#c3f0d1}
+:root[data-theme="nuit"] .quiz-feedback.bad{background:#51342f;color:#ffd0c4}
+:root[data-theme="nuit"] .tense-card strong{color:var(--ink)}
+:root[data-theme="nuit"] .tense-card:hover,:root[data-theme="nuit"] .tense-card:focus-visible{background:var(--surface-soft)}
+:root[data-theme="nuit"] .verb-lab{background:linear-gradient(130deg,#242337,#29283d)}
+:root[data-theme="nuit"] .lab-badge{background:var(--surface-soft);color:#d2ccff}
+:root[data-theme="nuit"] .conjugator-title .conjugator-kind{background:#28483f;color:#a9e9c0}
+:root[data-theme="nuit"] .mobile-nav button{color:var(--text-dim)}
+:root[data-theme="nuit"] .mobile-nav button.active{color:var(--violet)}
+:root[data-theme="nuit"] .remember-button,:root[data-theme="nuit"] .quiz-next button,:root[data-theme="nuit"] .start-quiz{background:#6254bb;border-color:#8173df;color:#fff}
+:root[data-theme="nuit"] .quiz-next button:disabled{background:var(--surface-soft);border-color:#4d4a68;color:var(--text-dim);opacity:1}
+:root[data-theme="nuit"] .hero .eyebrow{color:#fff;opacity:1}
+:root[data-theme="nuit"] .hero p{color:#fff}
