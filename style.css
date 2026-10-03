@@ -49,3 +49,11 @@
 :root[data-theme="nuit"] .mobile-nav{background:#242337ed;border-color:var(--line)}
 :root[data-reduce-motion="true"] *, :root[data-reduce-motion="true"] *::before, :root[data-reduce-motion="true"] *::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}
 @media(max-width:700px){.settings-grid{grid-template-columns:1fr}.day-picker{grid-template-columns:repeat(4,minmax(0,1fr))}}
+
+/* Keep wide verb tables inside their own scrollers instead of widening the page. */
+.app{grid-template-columns:238px minmax(0,1fr)}
+.main{min-width:0}
+.roadmap-heading{flex-wrap:wrap}
+.roadmap-heading>span{white-space:normal}
+@media(max-width:940px){.app{grid-template-columns:205px minmax(0,1fr)}}
+@media(max-width:700px){.app{grid-template-columns:minmax(0,1fr)}}
