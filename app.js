@@ -247,11 +247,11 @@ function renderSettings(){
 function validProgressBackup(data){
   if(!data||typeof data!=="object"||Array.isArray(data)||data.site!=="Anglais sans délai"||!data.progress||typeof data.progress!=="object"||Array.isArray(data.progress)||!data.preferences||typeof data.preferences!=="object"||Array.isArray(data.preferences))return false;
   const p=data.progress,prefs=data.preferences,stringArrays=[p.knownWords,p.seenLessons,p.knownVerbs,p.savedPhrases],validDate=value=>value===null||typeof value==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value))&&new Date(`${value}T00:00:00Z`).toISOString().slice(0,10)===value;
-  return !stringArrays.some(items=>!Array.isArray(items)||items.length>1000||items.some(item=>typeof item!=="string"))&&(p.bestScore===null||Number.isInteger(p.bestScore)&&p.bestScore>=0&&p.bestScore<=10)&&Number.isInteger(p.streak)&&p.streak>=0&&p.streak<=36500&&(p.lastVisit===undefined||validDate(p.lastVisit))&&themes.includes(prefs.theme)&&Array.isArray(prefs.studyDays)&&prefs.studyDays.length>0&&!prefs.studyDays.some(day=>!Number.isInteger(day)||day<0||day>6)&&typeof prefs.reduceMotion==="boolean";
+  return !stringArrays.some(items=>!Array.isArray(items)||items.length>1000||items.some(item=>typeof item!=="string"))&&(p.bestScore===null||Number.isInteger(p.bestScore)&&p.bestScore>=0&&p.bestScore<=10)&&Number.isInteger(p.streak)&&p.streak>=0&&p.streak<=36500&&(p.lastVisit===undefined?typeof data.exportedAt==="string"&&!Number.isNaN(Date.parse(data.exportedAt)):validDate(p.lastVisit))&&themes.includes(prefs.theme)&&Array.isArray(prefs.studyDays)&&prefs.studyDays.length>0&&!prefs.studyDays.some(day=>!Number.isInteger(day)||day<0||day>6)&&typeof prefs.reduceMotion==="boolean";
 }
 function restoreProgress(data){
   if(!validProgressBackup(data))return false;
-  const p=data.progress,prefs=data.preferences;
+  const p=data.progress,prefs=data.preferences,exportedAt=new Date(data.exportedAt),exportDay=`${exportedAt.getFullYear()}-${String(exportedAt.getMonth()+1).padStart(2,"0")}-${String(exportedAt.getDate()).padStart(2,"0")}`;
   const wordIds=new Set(words.map(word=>word.id)),lessonIds=new Set(grammar.map(lesson=>lesson.id)),verbIds=new Set(verbs.map(verb=>verb.base)),phraseIds=new Set(phrases.map(phrase=>phrase.id)),previous=state;
   state={
     ...freshState(),
@@ -259,7 +259,7 @@ function restoreProgress(data){
     seenLessons:[...new Set(p.seenLessons.filter(id=>lessonIds.has(id)))],
     knownVerbs:[...new Set(p.knownVerbs.filter(id=>verbIds.has(id)))],
     savedPhrases:[...new Set(p.savedPhrases.filter(id=>phraseIds.has(id)))],
-    bestScore:p.bestScore,lastVisit:p.lastVisit||null,streak:p.streak,
+    bestScore:p.bestScore,lastVisit:p.lastVisit===undefined?exportDay:p.lastVisit,streak:p.streak,
     theme:prefs.theme,studyDays:validStudyDays(prefs.studyDays),reduceMotion:prefs.reduceMotion
   };
   applyPreferences();
