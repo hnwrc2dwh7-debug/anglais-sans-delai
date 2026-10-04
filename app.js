@@ -230,13 +230,17 @@ function makeQuizOptions(correctForms,distractors){
 }
 function makeQuiz(){
   const questions=[];
-  for(const word of shuffle(words).slice(0,3))questions.push({
+  const mode=$("#quizType")?.value||"all";
+  const wordCount=mode==="all"?3:mode==="vocabulary"?10:0;
+  const verbCount=mode==="all"?3:mode==="verbs"?10:0;
+  const grammarCount=mode==="all"?4:mode==="grammar"?10:0;
+  for(const word of shuffle(words).slice(0,wordCount))questions.push({
     kind:"Vocabulaire",q:`Comment dit-on « ${word.fr} » en anglais ?`,a:word.en,
     opts:makeQuizOptions([word.en],words.filter(item=>item.id!==word.id).map(item=>item.en)),
     why:`${word.en} signifie « ${word.fr} ». Exemple : ${word.example}`
   });
   const uniqueQuizVerbs=[...new Map(verbs.map(verb=>[verb.base.toLowerCase(),verb])).values()];
-  for(const verb of shuffle(uniqueQuizVerbs).slice(0,3)){
+  for(const verb of shuffle(uniqueQuizVerbs).slice(0,verbCount)){
     const answers=verbForms(verb.past);
     const isLie=verb.base.toLowerCase()==="lie";
     questions.push({
@@ -245,15 +249,19 @@ function makeQuiz(){
       why:isLie?"Être allongé : lie – lay – lain. Mentir : lie – lied – lied.":`Les formes de ${verb.base} sont ${verb.base} – ${verb.past} – ${verb.part}.`
     });
   }
-  for(const question of shuffle(grammarQuestions).slice(0,4))questions.push({kind:"Grammaire",...question});
+  for(const question of shuffle(grammarQuestions).slice(0,grammarCount))questions.push({kind:"Grammaire",...question});
+  if(questions.length!==10)throw new Error(`Le quiz devait préparer dix questions, mais en a créé ${questions.length}.`);
   return shuffle(questions);
 }
 function startQuiz(){quizQuestions=makeQuiz();quizIndex=0;quizScore=0;quizLocked=false;renderQuizQuestion()}
 function renderQuiz(){
   const best=state.bestScore;
+  const mode=$("#quizType")?.value||"all";
+  const introductions={all:"Un mélange de mots, de verbes et de grammaire.",vocabulary:"Dix questions pour réviser les mots utiles.",verbs:"Dix questions sur les verbes et leurs formes.",grammar:"Dix questions pour t’entraîner en grammaire."};
   $("#bestScore").textContent=best===null?"Meilleur score : —":`Meilleur score : ${best} / 10`;
-  if(!quizQuestions.length)$("#quizBox").innerHTML=`<div class="quiz-start"><div class="quiz-big">🎯</div><h2>Dix petites questions</h2><p>Des mots, des verbes et de la grammaire. Si tu hésites, tente une réponse : l’explication t’aidera à retenir.</p><button class="start-quiz" id="startQuiz">Lancer le défi →</button></div>`;
+  if(!quizQuestions.length)$("#quizBox").innerHTML=`<div class="quiz-start"><div class="quiz-big">🎯</div><h2>Dix petites questions</h2><p>${esc(introductions[mode]||introductions.all)} Si tu hésites, tente une réponse : l’explication t’aidera à retenir.</p><button class="start-quiz" id="startQuiz">Lancer le défi →</button></div>`;
 }
+$("#quizType").addEventListener("change",()=>{if(!quizQuestions.length)renderQuiz()});
 function renderQuizQuestion(){
   const question=quizQuestions[quizIndex];
   if(!question){quizQuestions=[];renderQuiz();return}
