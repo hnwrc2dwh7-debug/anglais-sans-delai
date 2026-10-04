@@ -11,6 +11,32 @@ const groups = [
     ["excited","enthousiaste / impatient(e)","I’m excited about the trip. · Le voyage me rend enthousiaste."],["worried","inquiet / inquiète","Don’t be worried. · Ne t’inquiète pas."],["proud","fier / fière","I’m proud of you. · Je suis fier de toi."],["kind","gentil / bienveillant","That was very kind of you. · C’était très gentil de ta part."],["shy","timide","He’s a little shy. · Il est un peu timide."],["afraid","avoir peur","She’s afraid of spiders. · Elle a peur des araignées."],["miss","manquer à quelqu’un","I miss my friends. · Mes amis me manquent."],["feel","se sentir / ressentir","How are you feeling today? · Comment te sens-tu aujourd’hui ?"],["hope","espérer","I hope you feel better soon. · J’espère que tu iras bientôt mieux."],["trust","faire confiance","You can trust me. · Tu peux me faire confiance."],["lonely","seul / esseulé","He felt lonely in the new city. · Il se sentait seul dans cette nouvelle ville."],["upset","contrarié / triste","She was upset about the result. · Le résultat l’a contrariée."]]},
   {id:"study",title:"Études & travail",emoji:"📚",words:[
     ["improve","s’améliorer / améliorer","Your English is improving. · Ton anglais s’améliore."],["explain","expliquer","Can you explain this rule? · Peux-tu expliquer cette règle ?"],["understand","comprendre","I understand the question. · Je comprends la question."],["mistake","erreur","Making mistakes is part of learning. · Faire des erreurs fait partie de l’apprentissage."],["although","bien que / même si","Although it was late, we kept talking. · Même s’il était tard, nous avons continué à parler."],["instead","à la place","Let’s walk instead. · Allons-y à pied à la place."],["both","les deux","Both answers are correct. · Les deux réponses sont correctes."],["either","l’un ou l’autre / non plus","You can choose either option. · Tu peux choisir l’une ou l’autre option."],["during","pendant / au cours de","No phones during the lesson. · Pas de téléphone pendant le cours."],["deadline","date limite","The deadline is Friday. · La date limite est vendredi."],["skill","compétence","Listening is an important skill. · L’écoute est une compétence importante."],["immediately","immédiatement / tout de suite","Please call me immediately. · Appelle-moi tout de suite, s’il te plaît."]]},
+  {id:"school",title:"École & apprentissage",emoji:"📚",words:[
+    ["classroom","salle de classe","There are twenty desks in our classroom. · Il y a vingt bureaux dans notre salle de classe."],
+    ["lesson","cours / leçon","My English lesson starts at nine. · Mon cours d’anglais commence à neuf heures."],
+    ["homework","devoirs (indénombrable)","I have some homework to finish. · J’ai des devoirs à terminer."],
+    ["subject","matière scolaire","Science is my favourite subject. · Les sciences sont ma matière préférée."],
+    ["test","contrôle / test","We have a maths test on Friday. · On a un contrôle de maths vendredi."],
+    ["quiz","petit test / questionnaire","We have a short quiz today. · Nous avons un petit test aujourd’hui."],
+    ["exam","examen","She has an important exam next week. · Elle a un examen important la semaine prochaine."],
+    ["mark (UK) / grade (US)","note","I got a good mark in science. · J’ai eu une bonne note en sciences."],
+    ["timetable (UK) / schedule (US)","emploi du temps","Check your timetable before the first lesson. · Regarde ton emploi du temps avant le premier cours."],
+    ["notebook","cahier","Write the new words in your notebook. · Écris les nouveaux mots dans ton cahier."],
+    ["textbook","manuel scolaire","We use this textbook in class. · Nous utilisons ce manuel en classe."],
+    ["classmate","camarade de classe","I worked with a classmate on the project. · J’ai travaillé avec un camarade sur le projet."],
+    ["student","élève / étudiant(e)","Every student needs a pen. · Chaque élève a besoin d’un stylo."],
+    ["teacher","professeur / enseignante","Our teacher explained the rule. · Notre professeur a expliqué la règle."],
+    ["break","pause / récréation","We have a short break at eleven. · Nous avons une petite pause à onze heures."],
+    ["library","bibliothèque","I study in the library after school. · J’étudie à la bibliothèque après les cours."],
+    ["project","projet","Our project is about wild animals. · Notre projet porte sur les animaux sauvages."],
+    ["revise (UK) / review (US)","réviser","I need to revise for my exam. · Je dois réviser pour mon examen."],
+    ["practice","entraînement / pratique","A little practice every day helps. · Un peu d’entraînement chaque jour, ça aide."],
+    ["pencil","crayon à papier","Can I borrow a pencil? · Est-ce que je peux emprunter un crayon à papier ?"],
+    ["pen","stylo","I write with a blue pen. · J’écris avec un stylo bleu."],
+    ["ruler","règle","Draw a straight line with a ruler. · Trace une ligne droite avec une règle."],
+    ["backpack / schoolbag","sac à dos","I keep my books in my backpack. · Je garde mes livres dans mon sac à dos."],
+    ["board","tableau (de classe)","The teacher wrote the answer on the board. · Le professeur a écrit la réponse au tableau."]
+  ]},
   {id:"connectors",title:"Petits mots puissants",emoji:"🔗",words:[
     ["already","déjà","I’ve already eaten. · J’ai déjà mangé."],["yet","déjà / encore","Have you finished yet? · As-tu déjà terminé ?"],["still","encore / toujours","Are you still here? · Es-tu encore là ?"],["just","venir de / juste","I’ve just arrived. · Je viens d’arriver."],["ever","déjà (dans une question)","Have you ever tried sushi? · As-tu déjà goûté les sushis ?"],["since","depuis (point de départ)","I’ve lived here since 2020. · J’habite ici depuis 2020."],["for","depuis / pendant (durée)","We’ve waited for an hour. · Nous attendons depuis une heure."],["unless","à moins que / sauf si","You won’t pass unless you practise. · Tu ne réussiras pas si tu ne t’entraînes pas."],["however","cependant / toutefois","It’s expensive. However, it’s very good. · C’est cher. Cependant, c’est très bon."],["therefore","donc / par conséquent","It was raining; therefore, we stayed home. · Il pleuvait, donc nous sommes restés à la maison."],["instead of","au lieu de","Walk instead of taking the car. · Marche au lieu de prendre la voiture."],["as soon as","dès que","Call me as soon as you arrive. · Appelle-moi dès que tu arrives."]]},
   {id:"everyday",title:"Temps & quotidien",emoji:"🗓️",words:[
