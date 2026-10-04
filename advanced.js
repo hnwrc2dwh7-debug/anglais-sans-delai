@@ -270,7 +270,7 @@
     ["forgo","forwent","forgone","renoncer à"],["forsake","forsook","forsaken","abandonner"],["freeze","froze","frozen","geler"],
     ["grind","ground","ground","moudre, broyer"],["hang","hung / hanged","hung / hanged","pendre, accrocher"],["kneel","knelt / kneeled","knelt / kneeled","s’agenouiller"],
     ["lay","laid","laid","poser, étendre"],["lean","leaned / leant","leaned / leant","s’appuyer, pencher"],["leap","leaped / leapt","leaped / leapt","bondir"],
-    ["lend","lent","lent","prêter"],["lie","lay","lain","être allongé"],["light","lit / lighted","lit / lighted","allumer, éclairer"],
+    ["lend","lent","lent","prêter"],["lie","lay / lied","lain / lied","être allongé : lay / lain · mentir : lied / lied"],["light","lit / lighted","lit / lighted","allumer, éclairer"],
     ["mislead","misled","misled","induire en erreur"],["mistake","mistook","mistaken","se tromper, confondre"],["mow","mowed","mown / mowed","tondre"],
     ["overcome","overcame","overcome","surmonter"],["overdo","overdid","overdone","en faire trop"],["overhear","overheard","overheard","entendre par hasard"],
     ["overrun","overran","overrun","envahir, dépasser"],["overtake","overtook","overtaken","rattraper, dépasser"],["plead","pleaded / pled","pleaded / pled","supplier, plaider"],
@@ -436,7 +436,7 @@
       <div class="table-wrap"><table class="conjugation-table"><thead><tr><th>Personne</th><th>Affirmative</th><th>Négative</th><th>Question</th></tr></thead><tbody>${rows.map(row => `<tr><th scope="row">${esc(row.label)}</th><td>${esc(row.affirmative)}</td><td>${esc(row.negative)}</td><td>${esc(row.question)}</td></tr>`).join("")}</tbody></table></div>`;
     const enteredManual = pastInput.dataset.userEdited === "true" || partInput.dataset.userEdited === "true";
     const listed = verbs.some(v => v.base.toLowerCase() === verb.split(" ")[0]);
-    status.textContent = enteredManual ? "Formes irrégulières personnalisées prises en compte." : listed ? "Formes irrégulières de la liste utilisées." : "Règles régulières appliquées. Si ce verbe est irrégulier, saisis ses deux formes.";
+    status.textContent = verb.split(" ")[0] === "lie" && !enteredManual ? "Par défaut, lie signifie « être allongé » (lay / lain). Pour « mentir », saisis lied dans les deux champs." : enteredManual ? "Formes irrégulières personnalisées prises en compte." : listed ? "Formes irrégulières de la liste utilisées." : "Règles régulières appliquées. Si ce verbe est irrégulier, saisis ses deux formes.";
   };
   const known = new Map(verbs.map(v => [v.base.toLowerCase(), v]));
   const applyDefaults = () => {

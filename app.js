@@ -204,10 +204,11 @@ function makeQuiz(){
   const uniqueQuizVerbs=[...new Map(verbs.map(verb=>[verb.base.toLowerCase(),verb])).values()];
   for(const verb of shuffle(uniqueQuizVerbs).slice(0,3)){
     const answers=verbForms(verb.past);
+    const isLie=verb.base.toLowerCase()==="lie";
     questions.push({
-      kind:"Verbes",q:`Quel est le prétérit de ‘${verb.base}’ (${verb.fr}) ?`,a:answers[0],answers,
+      kind:"Verbes",q:isLie?"Quel prétérit correspond à « lie » ? (être allongé / mentir)":`Quel est le prétérit de ‘${verb.base}’ (${verb.fr}) ?`,a:answers[0],answers,
       opts:makeQuizOptions(answers,verbs.filter(item=>item.base!==verb.base).flatMap(item=>verbForms(item.past))),
-      why:`Les formes de ${verb.base} sont ${verb.base} – ${verb.past} – ${verb.part}.`
+      why:isLie?"Être allongé : lie – lay – lain. Mentir : lie – lied – lied.":`Les formes de ${verb.base} sont ${verb.base} – ${verb.past} – ${verb.part}.`
     });
   }
   for(const question of shuffle(grammarQuestions).slice(0,4))questions.push({kind:"Grammaire",...question});
