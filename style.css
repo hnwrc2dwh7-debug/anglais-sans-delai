@@ -155,3 +155,6 @@
 :root:not([data-theme="nuit"]) .hero{background:linear-gradient(112deg,#5449d8,#6256cf)}
 :root[data-theme="lavande"] .hero{background:linear-gradient(112deg,#6740bf,#7955c8)}
 :root[data-theme="ocean"] .hero{background:linear-gradient(112deg,#145b73,#247f90)}
+.favorite-filter{min-height:42px;padding:0 13px;border:1px solid var(--line);border-radius:12px;background:var(--white);color:var(--muted);font-size:12px;font-weight:750;white-space:nowrap}
+.favorite-filter:hover,.favorite-filter[aria-pressed="true"]{border-color:var(--violet);background:var(--violet-pale);color:var(--violet)}
+@media(max-width:440px){.favorite-filter{width:100%}}
