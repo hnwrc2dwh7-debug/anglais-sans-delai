@@ -158,3 +158,4 @@
 .favorite-filter{min-height:42px;padding:0 13px;border:1px solid var(--line);border-radius:12px;background:var(--white);color:var(--muted);font-size:12px;font-weight:750;white-space:nowrap}
 .favorite-filter:hover,.favorite-filter[aria-pressed="true"]{border-color:var(--violet);background:var(--violet-pale);color:var(--violet)}
 @media(max-width:440px){.favorite-filter{width:100%}}
+@media(min-width:441px) and (max-width:480px){.toolbar{flex-direction:column}.search{max-width:none}.select-wrap select,.favorite-filter{width:100%;max-width:none}}
