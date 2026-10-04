@@ -146,7 +146,15 @@ const stateKey="anglais-sans-blocage-state-v1";
 const studyDayLabels=[[1,"Lundi"],[2,"Mardi"],[3,"Mercredi"],[4,"Jeudi"],[5,"Vendredi"],[6,"Samedi"],[0,"Dimanche"]];
 const validStudyDays=value=>{const days=Array.isArray(value)?[...new Set(value.filter(day=>Number.isInteger(day)&&day>=0&&day<=6))].sort((a,b)=>a-b):[];return days.length?days:[1,2,3,4,5]};
 const themes=["clair","lavande","ocean","nuit"];
-const freshState=()=>({knownWords:[],seenLessons:[],knownVerbs:[],savedPhrases:[],bestScore:null,lastVisit:null,streak:0,theme:"clair",studyDays:[1,2,3,4,5],reduceMotion:false});
+const quizModeKeys=["all","vocabulary","verbs","grammar"];
+const validQuizScore=value=>value===null||Number.isInteger(value)&&value>=0&&value<=10;
+const cleanBestScores=(scores,legacyScore=null)=>{
+  const cleaned=Object.fromEntries(quizModeKeys.map(mode=>[mode,null]));
+  if(validQuizScore(legacyScore))cleaned.all=legacyScore;
+  if(scores&&typeof scores==="object"&&!Array.isArray(scores))for(const mode of quizModeKeys)if(validQuizScore(scores[mode]))cleaned[mode]=scores[mode];
+  return cleaned;
+};
+const freshState=()=>({knownWords:[],seenLessons:[],knownVerbs:[],savedPhrases:[],bestScores:cleanBestScores(),lastVisit:null,streak:0,theme:"clair",studyDays:[1,2,3,4,5],reduceMotion:false});
 const validIds=value=>Array.isArray(value)?[...new Set(value.filter(item=>typeof item==="string"))]:[];
 let state=freshState();
 try{
@@ -157,7 +165,7 @@ try{
     seenLessons:validIds(saved.seenLessons),
     knownVerbs:validIds(saved.knownVerbs),
     savedPhrases:validIds(saved.savedPhrases),
-    bestScore:Number.isInteger(saved.bestScore)&&saved.bestScore>=0&&saved.bestScore<=10?saved.bestScore:null,
+    bestScores:cleanBestScores(saved.bestScores,saved.bestScore),
     lastVisit:typeof saved.lastVisit==="string"?saved.lastVisit:null,
     streak:Number.isInteger(saved.streak)&&saved.streak>=0?saved.streak:0,
     theme:themes.includes(saved.theme)?saved.theme:"clair",
@@ -207,7 +215,7 @@ const grammarQuestions=[
   {q:"Quel modal donne surtout un conseil ?",a:"should",opts:["should","mustn’t","might","can’t"],why:"Should sert souvent à conseiller : You should rest."},
   {q:"Complète : The train ___ at 7:30 tomorrow.",a:"leaves",opts:["leaves","will leaves","is leave","leave"],why:"Le présent simple sert pour les horaires officiels, même futurs."}
 ];
-let quizQuestions=[],quizIndex=0,quizScore=0,quizLocked=false;
+let quizQuestions=[],quizIndex=0,quizScore=0,quizLocked=false,quizMode="all";
 function shuffle(items){const result=[...items];for(let i=result.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[result[i],result[j]]=[result[j],result[i]]}return result}
 function distinct(values){const seen=new Set();return values.map(value=>String(value??"").trim()).filter(value=>{const key=value.toLocaleLowerCase();if(!key||seen.has(key))return false;seen.add(key);return true})}
 function verbForms(value){return distinct(String(value??"").split("/"))}
@@ -228,9 +236,8 @@ function makeQuizOptions(correctForms,distractors){
   }
   return shuffle(options);
 }
-function makeQuiz(){
+function makeQuiz(mode=$("#quizType")?.value||"all"){
   const questions=[];
-  const mode=$("#quizType")?.value||"all";
   const wordCount=mode==="all"?3:mode==="vocabulary"?10:0;
   const verbCount=mode==="all"?3:mode==="verbs"?10:0;
   const grammarCount=mode==="all"?4:mode==="grammar"?10:0;
@@ -253,12 +260,12 @@ function makeQuiz(){
   if(questions.length!==10)throw new Error(`Le quiz devait préparer dix questions, mais en a créé ${questions.length}.`);
   return shuffle(questions);
 }
-function startQuiz(){quizQuestions=makeQuiz();quizIndex=0;quizScore=0;quizLocked=false;renderQuizQuestion()}
+function startQuiz(){quizMode=$("#quizType")?.value||"all";quizQuestions=makeQuiz(quizMode);quizIndex=0;quizScore=0;quizLocked=false;renderQuizQuestion()}
 function renderQuiz(){
-  const best=state.bestScore;
-  const mode=$("#quizType")?.value||"all";
+  const mode=quizQuestions.length?quizMode:$("#quizType")?.value||"all";
+  const best=state.bestScores[mode]??null;
   const introductions={all:"Un mélange de mots, de verbes et de grammaire.",vocabulary:"Dix questions pour réviser les mots utiles.",verbs:"Dix questions sur les verbes et leurs formes.",grammar:"Dix questions pour t’entraîner en grammaire."};
-  $("#bestScore").textContent=best===null?"Meilleur score : —":`Meilleur score : ${best} / 10`;
+  $("#bestScore").textContent=best===null?"Record du mode : —":`Record du mode : ${best} / 10`;
   if(!quizQuestions.length)$("#quizBox").innerHTML=`<div class="quiz-start"><div class="quiz-big">🎯</div><h2>Dix petites questions</h2><p>${esc(introductions[mode]||introductions.all)} Si tu hésites, tente une réponse : l’explication t’aidera à retenir.</p><button class="start-quiz" id="startQuiz">Lancer le défi →</button></div>`;
 }
 $("#quizType").addEventListener("change",()=>{if(!quizQuestions.length)renderQuiz()});
@@ -274,13 +281,13 @@ $("#quizBox").addEventListener("click",event=>{
     quizIndex++;
     if(quizIndex>=quizQuestions.length){
       const total=quizQuestions.length;
-      if(state.bestScore===null||quizScore>state.bestScore)state.bestScore=quizScore;
+      const previous=state.bestScores[quizMode];
+      if(previous===null||quizScore>previous)state.bestScores[quizMode]=quizScore;
       persist();
       quizQuestions=[];
       renderQuiz();
       const percentage=Math.round(quizScore/total*100);
       $("#quizBox").innerHTML=`<div class="quiz-finish"><div class="quiz-big">${percentage>=80?"🌟":percentage>=50?"👏":"🌱"}</div><h2>${quizScore} bonne${quizScore>1?"s":""} réponse${quizScore>1?"s":""} sur ${total}</h2><p>${percentage>=80?"Belle maîtrise ! Reviens plus tard pour ancrer les automatismes.":percentage>=50?"Tu avances bien. Relis les explications et tente un nouveau tour.":"Chaque erreur te montre quoi revoir. Recommence quand tu veux, les questions changent."}</p><button class="start-quiz" id="startQuiz">Rejouer avec d’autres questions →</button></div>`;
-      $("#bestScore").textContent=`Meilleur score : ${state.bestScore} / 10`;
     }else{quizLocked=false;renderQuizQuestion()}
     return;
   }
@@ -315,8 +322,8 @@ function renderSettings(){
 }
 function validProgressBackup(data){
   if(!data||typeof data!=="object"||Array.isArray(data)||data.site!=="Anglais sans délai"||!data.progress||typeof data.progress!=="object"||Array.isArray(data.progress)||!data.preferences||typeof data.preferences!=="object"||Array.isArray(data.preferences))return false;
-  const p=data.progress,prefs=data.preferences,stringArrays=[p.knownWords,p.seenLessons,p.knownVerbs,p.savedPhrases],validDate=value=>value===null||typeof value==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value))&&new Date(`${value}T00:00:00Z`).toISOString().slice(0,10)===value;
-  return !stringArrays.some(items=>!Array.isArray(items)||items.length>1000||items.some(item=>typeof item!=="string"))&&(p.bestScore===null||Number.isInteger(p.bestScore)&&p.bestScore>=0&&p.bestScore<=10)&&Number.isInteger(p.streak)&&p.streak>=0&&p.streak<=36500&&(p.lastVisit===undefined?typeof data.exportedAt==="string"&&!Number.isNaN(Date.parse(data.exportedAt)):validDate(p.lastVisit))&&themes.includes(prefs.theme)&&Array.isArray(prefs.studyDays)&&prefs.studyDays.length>0&&!prefs.studyDays.some(day=>!Number.isInteger(day)||day<0||day>6)&&typeof prefs.reduceMotion==="boolean";
+  const p=data.progress,prefs=data.preferences,stringArrays=[p.knownWords,p.seenLessons,p.knownVerbs,p.savedPhrases],validDate=value=>value===null||typeof value==="string"&&/^\d{4}-\d{2}-\d{2}$/.test(value)&&!Number.isNaN(Date.parse(value))&&new Date(`${value}T00:00:00Z`).toISOString().slice(0,10)===value,validScores=p.bestScores===undefined||p.bestScores&&typeof p.bestScores==="object"&&!Array.isArray(p.bestScores)&&quizModeKeys.every(mode=>p.bestScores[mode]===undefined||validQuizScore(p.bestScores[mode]));
+  return !stringArrays.some(items=>!Array.isArray(items)||items.length>1000||items.some(item=>typeof item!=="string"))&&validQuizScore(p.bestScore)&&validScores&&Number.isInteger(p.streak)&&p.streak>=0&&p.streak<=36500&&(p.lastVisit===undefined?typeof data.exportedAt==="string"&&!Number.isNaN(Date.parse(data.exportedAt)):validDate(p.lastVisit))&&themes.includes(prefs.theme)&&Array.isArray(prefs.studyDays)&&prefs.studyDays.length>0&&!prefs.studyDays.some(day=>!Number.isInteger(day)||day<0||day>6)&&typeof prefs.reduceMotion==="boolean";
 }
 function restoreProgress(data){
   if(!validProgressBackup(data))return false;
@@ -328,7 +335,7 @@ function restoreProgress(data){
     seenLessons:[...new Set(p.seenLessons.filter(id=>lessonIds.has(id)))],
     knownVerbs:[...new Set(p.knownVerbs.filter(id=>verbIds.has(id)))],
     savedPhrases:[...new Set(p.savedPhrases.filter(id=>phraseIds.has(id)))],
-    bestScore:p.bestScore,lastVisit:p.lastVisit===undefined?exportDay:p.lastVisit,streak:p.streak,
+    bestScores:cleanBestScores(p.bestScores,p.bestScore),lastVisit:p.lastVisit===undefined?exportDay:p.lastVisit,streak:p.streak,
     theme:prefs.theme,studyDays:validStudyDays(prefs.studyDays),reduceMotion:prefs.reduceMotion
   };
   applyPreferences();
@@ -342,7 +349,7 @@ function initSettings(){
   $("#reduceMotion").addEventListener("change",event=>{state.reduceMotion=event.target.checked;applyPreferences();persist();});
   $("#studyDays").addEventListener("change",event=>{if(!event.target.matches('[name="study-day"]'))return;const selected=$$('[name="study-day"]:checked').map(input=>Number(input.value));if(!selected.length){event.target.checked=true;toast("Garde au moins un jour choisi.");return;}state.studyDays=validStudyDays(selected);persist();renderSettings();});
   $("#resetSettings").addEventListener("click",()=>{state.theme="clair";state.studyDays=[1,2,3,4,5];state.reduceMotion=false;applyPreferences();persist();renderSettings();toast("Tes réglages sont revenus aux valeurs de départ.")});
-  $("#exportProgress").addEventListener("click",()=>{const data={site:"Anglais sans délai",exportedAt:new Date().toISOString(),progress:{knownWords:state.knownWords,seenLessons:state.seenLessons,knownVerbs:state.knownVerbs,savedPhrases:state.savedPhrases,bestScore:state.bestScore,lastVisit:state.lastVisit,streak:state.streak},preferences:{theme:state.theme,studyDays:state.studyDays,reduceMotion:state.reduceMotion}};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download="anglais-sans-delai-progres.json";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("Copie de tes progrès téléchargée.")});
+  $("#exportProgress").addEventListener("click",()=>{const data={site:"Anglais sans délai",exportedAt:new Date().toISOString(),progress:{knownWords:state.knownWords,seenLessons:state.seenLessons,knownVerbs:state.knownVerbs,savedPhrases:state.savedPhrases,bestScore:state.bestScores.all,bestScores:state.bestScores,lastVisit:state.lastVisit,streak:state.streak},preferences:{theme:state.theme,studyDays:state.studyDays,reduceMotion:state.reduceMotion}};const url=URL.createObjectURL(new Blob([JSON.stringify(data,null,2)],{type:"application/json"}));const link=document.createElement("a");link.href=url;link.download="anglais-sans-delai-progres.json";link.click();setTimeout(()=>URL.revokeObjectURL(url),1000);toast("Copie de tes progrès téléchargée.")});
   const importFile=$("#importProgressFile");
   $("#importProgress").addEventListener("click",()=>importFile.click());
   importFile.addEventListener("change",async event=>{
@@ -362,6 +369,6 @@ function wordOfDayIndex(date=new Date()){const today=Date.UTC(date.getFullYear()
 function updateWordOfDay(){const w=words[wordOfDayIndex()];$("#wordOfDay").textContent=w.en;$("#wordOfDayFr").textContent=w.fr;$("#wordOfDayExample").textContent=w.example;$("#wordOfDayCount").textContent="À retenir"}
 function legacyCopy(text){const field=document.createElement("textarea");field.value=text;field.setAttribute("readonly","");field.style.position="fixed";field.style.opacity="0";document.body.appendChild(field);field.select();let copied=false;try{copied=document.execCommand("copy")}catch{}field.remove();return copied}
 async function shareSite(){const url=`${location.origin}${location.pathname}`,data={title:"Anglais sans délai",text:"Des mots, de la grammaire, des verbes et des quiz pour apprendre l’anglais gratuitement.",url};if(typeof navigator.share==="function"){try{await navigator.share(data);toast("Tu peux choisir à qui envoyer le site.");return}catch(error){if(error?.name==="AbortError")return}}try{if(navigator.clipboard?.writeText)await navigator.clipboard.writeText(url);else if(!legacyCopy(url)){window.prompt("Copie ce lien pour le partager :",url);return}toast("Lien copié : tu peux l’envoyer.")}catch{if(!legacyCopy(url)){window.prompt("Copie ce lien pour le partager :",url);return}toast("Lien copié : tu peux l’envoyer.")}}
-$("#resetProgress").addEventListener("click",()=>{if(confirm("Effacer les mots retenus, les leçons vues et le meilleur score sur cet appareil ?")){const preferences={theme:state.theme,studyDays:state.studyDays,reduceMotion:state.reduceMotion};state={...freshState(),...preferences};persist();updateStreak();updateProgress();renderWords();renderVerbs();renderPhrases();renderSettings();toast("Tes progrès ont été effacés.")}});
+$("#resetProgress").addEventListener("click",()=>{if(confirm("Effacer les mots retenus, les leçons vues et les records des quiz sur cet appareil ?")){const preferences={theme:state.theme,studyDays:state.studyDays,reduceMotion:state.reduceMotion};state={...freshState(),...preferences};persist();updateStreak();updateProgress();renderWords();renderVerbs();renderPhrases();renderQuiz();renderSettings();toast("Tes progrès ont été effacés.")}});
 function init(){applyPreferences();initWordControls();initGrammarTopics();initVerbControls();initPhraseControls();initSettings();$("#shareSite").addEventListener("click",shareSite);updateStreak();updateProgress();updateWordOfDay();renderWords();renderGrammar();renderVerbs();renderPhrases();renderSounds();renderQuiz();const hash=location.hash.slice(1);if(viewNames[hash])show(hash);if("serviceWorker"in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("./sw.js").catch(()=>{})}
 init();
