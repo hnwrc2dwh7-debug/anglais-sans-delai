@@ -345,11 +345,13 @@
   const ingForm = verb => {
     if (verb === "be") return "being";
     if (/ie$/.test(verb)) return `${verb.slice(0, -2)}ying`;
+    if (/ic$/.test(verb)) return `${verb}king`;
     if (/[^e]e$/.test(verb) && !/(ee|ye|oe)$/.test(verb)) return `${verb.slice(0, -1)}ing`;
     if (doublesFinal.has(verb) || (verb.length <= 3 && /[^aeiou][aeiou][^aeiouwxy]$/.test(verb))) return `${verb}${verb.at(-1)}ing`;
     return `${verb}ing`;
   };
   const regularPast = verb => {
+    if (/ic$/.test(verb)) return `${verb}ked`;
     if (/e$/.test(verb)) return `${verb}d`;
     if (/[^aeiou]y$/.test(verb)) return `${verb.slice(0, -1)}ied`;
     if (doublesFinal.has(verb) || (verb.length <= 3 && /[^aeiou][aeiou][^aeiouwxy]$/.test(verb))) return `${verb}${verb.at(-1)}ed`;
