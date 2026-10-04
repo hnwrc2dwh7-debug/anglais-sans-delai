@@ -341,7 +341,7 @@
     if (/[^aeiou]y$/.test(verb)) return `${verb.slice(0, -1)}ies`;
     return `${verb}s`;
   };
-  const doublesFinal = new Set(["stop","plan","chat","drop","shop","rub","hug","beg","nod","jog","rob","fit","sit","set","put","get","win","run","swim","begin","forget","regret","admit","commit","occur","refer","prefer","permit","submit","omit","control","compel"]);
+  const doublesFinal = new Set(["stop","plan","chat","drop","shop","rub","hug","beg","nod","jog","rob","fit","sit","set","put","get","win","run","swim","begin","forget","regret","admit","commit","occur","refer","prefer","permit","submit","omit","control","compel","clap","drag","flip","grab","slip","step","trap","wrap","scan","slam","plug","spot","trim","snip","clog","flap","plot","snag","swat"]);
   const ingForm = verb => {
     if (verb === "be") return "being";
     if (/ie$/.test(verb)) return `${verb.slice(0, -2)}ying`;
