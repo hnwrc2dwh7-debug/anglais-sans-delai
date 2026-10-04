@@ -121,3 +121,37 @@
 :root[data-theme="nuit"] .quiz-next button:disabled{background:var(--surface-soft);border-color:#4d4a68;color:var(--text-dim);opacity:1}
 :root[data-theme="nuit"] .hero .eyebrow{color:#fff;opacity:1}
 :root[data-theme="nuit"] .hero p{color:#fff}
+
+/* Rehausser les textes secondaires et les fonds d’accent des palettes claires. */
+:root:not([data-theme="nuit"]){--muted:#66677b}
+:root:not([data-theme="nuit"]) .nav-label{color:#696a7e}
+:root:not([data-theme="nuit"]) .side-foot{color:#68697d}
+:root:not([data-theme="nuit"]) .path-card small{color:#5e6077}
+:root:not([data-theme="nuit"]) .example,:root:not([data-theme="nuit"]) .phrase-card p{color:#65667a}
+:root:not([data-theme="nuit"]) .search{color:#65667b}
+:root:not([data-theme="nuit"]) .flash-meta,:root:not([data-theme="nuit"]) .flash-ipa{color:#66657c}
+:root:not([data-theme="nuit"]) .lesson-list button span{color:#66667b}
+:root:not([data-theme="nuit"]) .lesson-detail .eyebrow span{color:#5e5f74!important}
+:root:not([data-theme="nuit"]) .formula b{color:#5f5a9b}
+:root:not([data-theme="nuit"]) .source-note{color:#5e5f73}
+:root:not([data-theme="nuit"]) th{color:#626277}
+:root:not([data-theme="nuit"]) .tip-card p{color:#626176}
+:root:not([data-theme="nuit"]) .phrase-card .context{color:#5f6075}
+:root:not([data-theme="nuit"]) .phrase-phonetic{color:#66657b}
+:root:not([data-theme="nuit"]) .sound-card p,:root:not([data-theme="nuit"]) .sound-exercise p{color:#626477}
+:root:not([data-theme="nuit"]) .quiz-progress,:root:not([data-theme="nuit"]) .quiz-note{color:#636478}
+:root:not([data-theme="nuit"]) .time-visual{color:#68677e}
+:root:not([data-theme="nuit"]) .time-visual b{color:#286b47}
+:root:not([data-theme="nuit"]) .tense-card span,:root:not([data-theme="nuit"]) .tense-card small{color:#66657b}
+:root:not([data-theme="nuit"]) .conjugator-fields small{color:#666579}
+:root:not([data-theme="nuit"]) .conjugator-title span{color:#626378}
+:root:not([data-theme="nuit"]) .lab-note{color:#626377}
+:root:not([data-theme="nuit"]) .footer{color:#696a7e}
+:root:not([data-theme="nuit"]) .footer .text-link{color:#626377}
+:root:not([data-theme="nuit"]) .mobile-nav button{color:#5f6077}
+:root:not([data-theme="nuit"]) .hero .eyebrow{opacity:1}
+:root:not([data-theme="nuit"]) .hero p{color:#fff}
+:root[data-theme="ocean"]{--violet:#126b83}
+:root:not([data-theme="nuit"]) .hero{background:linear-gradient(112deg,#5449d8,#6256cf)}
+:root[data-theme="lavande"] .hero{background:linear-gradient(112deg,#6740bf,#7955c8)}
+:root[data-theme="ocean"] .hero{background:linear-gradient(112deg,#145b73,#247f90)}
