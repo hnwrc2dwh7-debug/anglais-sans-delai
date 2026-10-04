@@ -1,6 +1,6 @@
-const CACHE="anglais-sans-blocage-v33";
+const CACHE="anglais-sans-blocage-v34";
 const FILES=["./","./style.css","./app.js","./advanced.js"];
-self.addEventListener("install",event=>event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting())));
+self.addEventListener("install",event=>event.waitUntil((async()=>{const cache=await caches.open(CACHE);await Promise.all(FILES.map(async file=>{const response=await fetch(`${file}?precache=${CACHE}`,{cache:"reload"});if(!response.ok)throw new Error(`Impossible de mettre en cache ${file} (${response.status}).`);await cache.put(file,response)}));await self.skipWaiting()})()));
 self.addEventListener("activate",event=>event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(key=>key.startsWith("anglais-sans-blocage-")&&key!==CACHE).map(key=>caches.delete(key)))).then(()=>self.clients.claim())));
 self.addEventListener("fetch",event=>{
   if(event.request.method!=="GET")return;
