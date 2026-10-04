@@ -419,10 +419,12 @@
     const head = verb.split(/\s+/)[0];
     const customPast = pastInput.dataset.userEdited === "true";
     const customPart = partInput.dataset.userEdited === "true";
-    const isKnownVerb = verbs.some(item => item.base.toLowerCase() === head);
-    if (!isKnownVerb && customPast !== customPart) {
-      output.innerHTML = '<div class="empty-state">Pour un verbe irrégulier absent de la liste, renseigne le prétérit et le participe passé ensemble.</div>';
-      status.textContent = "Il manque une des deux formes irrégulières.";
+    const enteredManual = customPast || customPart;
+    const manualPast = pastInput.value.trim();
+    const manualPart = partInput.value.trim();
+    if (enteredManual && (!customPast || !customPart || !manualPast || !manualPart)) {
+      output.innerHTML = '<div class="empty-state">Pour garder une conjugaison cohérente, renseigne le prétérit et le participe passé ensemble.</div>';
+      status.textContent = "Complète les deux formes du verbe.";
       return;
     }
     const rows = makeRows();
@@ -432,10 +434,9 @@
       return;
     }
     const label = tenseLabels[tenseSelect.value];
-    output.innerHTML = `<div class="conjugator-title"><div><span>VERBE : <b>${esc(verb)}</b></span><h3>${label[0]} · ${label[1]}</h3></div><span class="conjugator-kind">${verbs.some(v => v.base.toLowerCase() === verb.split(" ")[0]) ? "forme irrégulière connue" : "règles régulières"}</span></div>
-      <div class="table-wrap"><table class="conjugation-table"><thead><tr><th>Personne</th><th>Affirmative</th><th>Négative</th><th>Question</th></tr></thead><tbody>${rows.map(row => `<tr><th scope="row">${esc(row.label)}</th><td>${esc(row.affirmative)}</td><td>${esc(row.negative)}</td><td>${esc(row.question)}</td></tr>`).join("")}</tbody></table></div>`;
-    const enteredManual = pastInput.dataset.userEdited === "true" || partInput.dataset.userEdited === "true";
     const listed = verbs.some(v => v.base.toLowerCase() === verb.split(" ")[0]);
+    output.innerHTML = `<div class="conjugator-title"><div><span>VERBE : <b>${esc(verb)}</b></span><h3>${label[0]} · ${label[1]}</h3></div><span class="conjugator-kind">${enteredManual ? "formes personnalisées" : listed ? "forme irrégulière connue" : "règles régulières"}</span></div>
+      <div class="table-wrap"><table class="conjugation-table"><thead><tr><th>Personne</th><th>Affirmative</th><th>Négative</th><th>Question</th></tr></thead><tbody>${rows.map(row => `<tr><th scope="row">${esc(row.label)}</th><td>${esc(row.affirmative)}</td><td>${esc(row.negative)}</td><td>${esc(row.question)}</td></tr>`).join("")}</tbody></table></div>`;
     status.textContent = verb.split(" ")[0] === "lie" && !enteredManual ? "Par défaut, lie signifie « être allongé » (lay / lain). Pour « mentir », saisis lied dans les deux champs." : enteredManual ? "Formes irrégulières personnalisées prises en compte." : listed ? "Formes irrégulières de la liste utilisées." : "Règles régulières appliquées. Si ce verbe est irrégulier, saisis ses deux formes.";
   };
   const known = new Map(verbs.map(v => [v.base.toLowerCase(), v]));
