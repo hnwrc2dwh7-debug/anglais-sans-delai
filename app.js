@@ -319,7 +319,7 @@ function renderSettings(){
   $("#themeSelect").value=state.theme;
   $("#reduceMotion").checked=state.reduceMotion;
   $$('[name="study-day"]').forEach(input=>input.checked=state.studyDays.includes(Number(input.value)));
-  const today=new Date().getDay(),selected=state.studyDays.map(day=>studyDayLabels.find(([id])=>id===day)?.[1]).filter(Boolean);
+  const today=new Date().getDay(),selected=studyDayLabels.filter(([day])=>state.studyDays.includes(day)).map(([,label])=>label);
   $("#studyDaySummary").textContent=selected.length?"Tes jours : "+selected.join(", ")+". "+(state.studyDays.includes(today)?"Aujourd’hui est un jour choisi.":"Aujourd’hui est un jour libre."):"Choisis au moins un jour.";
 }
 function validProgressBackup(data){
