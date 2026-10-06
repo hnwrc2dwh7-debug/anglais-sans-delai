@@ -252,12 +252,17 @@ function makeQuiz(mode=$("#quizType")?.value||"all"){
   });
   const uniqueQuizVerbs=[...new Map(verbs.map(verb=>[verb.base.toLowerCase(),verb])).values()];
   for(const verb of shuffle(uniqueQuizVerbs).slice(0,verbCount)){
-    const answers=verbForms(verb.past);
     const isLie=verb.base.toLowerCase()==="lie";
+    const liePast=isLie?(Math.random()<0.5?"lay":"lied"):null;
+    const answers=isLie?[liePast]:verbForms(verb.past);
+    const lieSense=liePast==="lay"?"être allongé":"mentir";
+    const otherLieForm=liePast==="lay"?"lied":"lay";
+    const regularDistractors=distinct(verbs.filter(item=>item.base.toLowerCase()!=="lie").flatMap(item=>verbForms(item.past)).filter(form=>form.toLowerCase()!==liePast?.toLowerCase()&&form.toLowerCase()!==otherLieForm));
+    const distractors=isLie?[otherLieForm,...shuffle(regularDistractors).slice(0,2)]:verbs.filter(item=>item.base!==verb.base).flatMap(item=>verbForms(item.past));
     questions.push({
-      kind:"Verbes",q:isLie?"Quel prétérit correspond à « lie » ? (être allongé / mentir)":`Quel est le prétérit de ‘${verb.base}’ (${verb.fr}) ?`,a:answers[0],answers,
-      opts:makeQuizOptions(answers,verbs.filter(item=>item.base!==verb.base).flatMap(item=>verbForms(item.past))),
-      why:isLie?"Être allongé : lie – lay – lain. Mentir : lie – lied – lied.":`Les formes de ${verb.base} sont ${verb.base} – ${verb.past} – ${verb.part}.`
+      kind:"Verbes",q:isLie?`Quel est le prétérit de « lie » au sens de « ${lieSense} » ?`:`Quel est le prétérit de ‘${verb.base}’ (${verb.fr}) ?`,a:answers[0],answers,
+      opts:makeQuizOptions(answers,distractors),
+      why:isLie?(liePast==="lay"?"Au sens « être allongé », lie – lay – lain. « Mentir » se conjugue lie – lied – lied.":"Au sens « mentir », lie – lied – lied. « Être allongé » se conjugue lie – lay – lain."):`Les formes de ${verb.base} sont ${verb.base} – ${verb.past} – ${verb.part}.`
     });
   }
   for(const question of shuffle(grammarQuestions).slice(0,grammarCount))questions.push({kind:"Grammaire",...question});
