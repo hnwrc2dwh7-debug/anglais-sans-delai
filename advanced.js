@@ -380,7 +380,7 @@
       switch (tenseSelect.value) {
         case "present-simple":
           if (head === "be") {
-            const aux = bePresent(person); affirmative = `${subject} ${aux}`; negative = `${subject} ${aux} not`; question = `${aux[0].toUpperCase()}${aux.slice(1)} ${subject}?`;
+            const aux = bePresent(person), phrase = tail ? ` ${tail}` : ""; affirmative = `${subject} ${aux}${phrase}`; negative = `${subject} ${aux} not${phrase}`; question = `${aux[0].toUpperCase()}${aux.slice(1)} ${subject}${phrase}?`;
           } else {
             const inflected = attach(person === 2 ? thirdPerson(head) : head);
             const aux = person === 2 ? "does" : "do";
@@ -389,7 +389,7 @@
           break;
         case "past-simple":
           if (head === "be") {
-            const aux = bePast(person); affirmative = `${subject} ${aux}`; negative = `${subject} ${aux} not`; question = `${aux[0].toUpperCase()}${aux.slice(1)} ${subject}?`;
+            const aux = bePast(person), phrase = tail ? ` ${tail}` : ""; affirmative = `${subject} ${aux}${phrase}`; negative = `${subject} ${aux} not${phrase}`; question = `${aux[0].toUpperCase()}${aux.slice(1)} ${subject}${phrase}?`;
           } else { affirmative = `${subject} ${past}`; negative = `${subject} did not ${base}`; question = `Did ${subject} ${base}?`; }
           break;
         case "present-continuous": {
