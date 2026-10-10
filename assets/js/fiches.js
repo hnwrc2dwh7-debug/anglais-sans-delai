@@ -359,7 +359,7 @@ E.teacherHome = () => {
   });
   return `<section class="hero prof-hero"><div class="stack" style="gap:12px"><span class="eyebrow">Mode enseignant</span><h1>Espace enseignant 🍎</h1>
     <p>Projetez des exercices au tableau, imprimez des fiches et leurs corrigés, ou présentez le vocabulaire en images. Pour revenir à la vue élève : bouton « 🍎 Prof » en haut de l’écran.</p>
-    <div class="row"><a class="btn spark big" href="#fiches">📝 Fiches d’exercices</a><a class="btn ghost" href="#enseignants">ℹ️ Présentation du site</a></div></div></section>
+    <div class="row"><a class="btn spark big" href="#fiches">📝 Fiches d’exercices</a><a class="btn ghost" href="intro.html">🎬 Présentation animée</a><a class="btn ghost" href="#enseignants">ℹ️ Présentation du site</a></div></div></section>
   <section class="stack"><h2>🧑‍🏫 Au tableau, tout de suite</h2><p class="muted">Une fiche au hasard s’ouvre en grand : la classe répond, puis vous révélez la correction (barre d’espace).</p>
     <div class="grid auto-fill">${E.FICHES.map(f => `<button class="game-card" type="button" data-tq="${f.id}"><span class="g-emoji">${f.emoji}</span><b>${esc(f.name)}</b><small>${esc(f.desc)}</small><span class="best">Projeter →</span></button>`).join("")}</div></section>
   <div class="grid g2">

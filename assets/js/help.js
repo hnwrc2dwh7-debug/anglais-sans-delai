@@ -115,6 +115,8 @@ E.route("partager", () => {
       const done = () => E.toast("Lien copié 📋");
       try { navigator.clipboard.writeText(E.SITE_URL).then(done, () => { $("#linkBox").select(); E.toast("Sélectionne le lien et copie-le."); }); } catch { $("#linkBox").select(); }
     });
+    const introUrl = E.SITE_URL + "intro.html";
+    $("#copyIntro").addEventListener("click", () => { try { navigator.clipboard.writeText(introUrl).then(() => E.toast("Lien de la présentation copié ✔"), () => E.toast(introUrl)); } catch { E.toast(introUrl); } });
     const sh = $("#shareNative");
     if (navigator.share) sh.addEventListener("click", () => navigator.share({ title: "Anglais Éclair", text: "Apprends l’anglais gratuitement avec Anglais Éclair ⚡", url: E.SITE_URL }).catch(() => {}));
     else sh.hidden = true;
@@ -129,6 +131,8 @@ E.route("partager", () => {
       <h3>À savoir avant de partager</h3>
       <ul class="list-clean"><li>Chaque personne a ses propres progrès, sur son appareil.</li><li>Fonctionne sur téléphone, tablette et ordinateur, même hors connexion après la première visite.</li><li>Pour les professeurs : une <a href="#enseignants">page de présentation</a> résume les contenus et la méthode.</li></ul>
     </section>
-  </div>`;
+  </div>
+  <section class="card stack"><h2>🎬 La présentation animée</h2><p>Une minute, en musique, pour découvrir le site : parfait à montrer en classe ou à envoyer avant de partager le lien.</p>
+    <div class="row"><a class="btn spark" href="intro.html">▶ Voir la présentation</a><button class="btn" type="button" id="copyIntro">📋 Copier son lien</button></div></section>`;
 }, "Partager");
 })();
