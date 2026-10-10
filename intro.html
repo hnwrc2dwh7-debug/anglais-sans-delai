@@ -3,545 +3,650 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>Anglais Éclair · Présentation</title>
-  <meta name="description" content="La présentation animée d’Anglais Éclair : mots en images, 12 temps, verbes irréguliers, fiches d’exercices, mode tableau, jeux. Gratuit et sans compte.">
+  <title>Anglais Éclair · La visite guidée</title>
+  <meta name="description" content="La démo d’Anglais Éclair : le site se pilote tout seul devant toi. Recherche, mots en images, 12 temps, fiches corrigées, mode tableau, mode enseignant, réglages, jeux.">
   <meta name="theme-color" content="#0b0d24">
-  <meta property="og:title" content="Anglais Éclair ⚡ La présentation">
-  <meta property="og:description" content="1 minute pour découvrir le site : mots en images, 12 temps, verbes irréguliers, fiches, mode tableau, jeux.">
+  <meta property="og:title" content="Anglais Éclair ⚡ La visite guidée">
+  <meta property="og:description" content="Regarde le site se piloter tout seul : recherche, mots en images, fiches corrigées, mode tableau, jeux…">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/svg+xml" href="assets/icon.svg">
   <link rel="stylesheet" href="assets/css/fonts.css">
   <style>
-    :root {
-      --night: #0b0d24; --night-2: #151a46; --accent: #3d5afe; --accent-2: #7c8cff; --spark: #ffc930; --pink: #ff4f8b; --green: #19c37d;
-      --ink: #f3f4ff; --muted: #a9aed6; --chalk: #1f3a2e;
-      --display: "Unbounded", "Arial Black", system-ui, sans-serif; --body: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
-    }
+    :root { --night: #0b0d24; --night-2: #161b4a; --accent: #3d5afe; --spark: #ffc930; --pink: #ff4f8b; --ink: #f3f4ff; --muted: #a9aed6;
+      --display: "Unbounded", "Arial Black", system-ui, sans-serif; --body: "Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; }
     body { background: var(--night); color: var(--ink); font-family: var(--body); overflow: hidden; -webkit-font-smoothing: antialiased; }
     button { font: inherit; cursor: pointer; }
-    a { color: inherit; }
 
-    /* ---------- Fond animé ---------- */
+    /* Décor */
     .sky { position: fixed; inset: 0; background:
-      radial-gradient(60% 50% at 20% 10%, color-mix(in srgb, var(--accent) 45%, transparent), transparent 70%),
-      radial-gradient(50% 45% at 85% 90%, color-mix(in srgb, var(--pink) 30%, transparent), transparent 70%),
+      radial-gradient(55% 50% at 15% 10%, rgba(61,90,254,.55), transparent 70%),
+      radial-gradient(45% 45% at 90% 95%, rgba(255,79,139,.35), transparent 70%),
       linear-gradient(160deg, var(--night-2), var(--night)); }
-    .sky::after { content: ""; position: absolute; inset: -50%; background-image: radial-gradient(rgba(255,255,255,.18) 1px, transparent 1.5px); background-size: 34px 34px; animation: drift 40s linear infinite; opacity: .5; }
-    @keyframes drift { to { transform: translate(34px, 68px); } }
-    .flash { position: fixed; inset: 0; background: #fff; opacity: 0; pointer-events: none; z-index: 5; }
-    .flash.go { animation: flash .7s ease-out; }
-    @keyframes flash { 0% { opacity: .95; } 15% { opacity: .1; } 25% { opacity: .7; } 100% { opacity: 0; } }
+    .sky::after { content: ""; position: absolute; inset: -50%; background-image: radial-gradient(rgba(255,255,255,.16) 1px, transparent 1.5px); background-size: 32px 32px; animation: drift 50s linear infinite; }
+    @keyframes drift { to { transform: translate(32px, 64px); } }
 
-    /* ---------- Scènes ---------- */
-    .stage { position: fixed; inset: 0 0 96px; display: grid; place-items: center; z-index: 2; }
-    .scene { position: absolute; inset: 0; display: grid; place-items: center; align-content: center; gap: clamp(14px, 3vmin, 28px); padding: 24px 16px; text-align: center; opacity: 0; visibility: hidden; }
-    .scene.on { opacity: 1; visibility: visible; animation: sceneIn .6s cubic-bezier(.2,.8,.2,1) both; }
-    .scene.out { visibility: visible; animation: sceneOut .35s ease-in both; }
-    @keyframes sceneIn { from { opacity: 0; transform: scale(1.06); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
-    @keyframes sceneOut { from { opacity: 1; } to { opacity: 0; transform: scale(.94) translateY(-20px); filter: blur(6px); } }
+    /* Scène + caméra */
+    .stage { position: fixed; inset: 0 0 60px; overflow: hidden; }
+    .cam { position: absolute; left: 0; top: 0; transform-origin: 0 0; will-change: transform; }
+    .win { position: relative; border-radius: 14px; background: #fff; box-shadow: 0 50px 120px rgba(0,0,0,.55), 0 0 0 1px rgba(255,255,255,.12); overflow: hidden; }
+    .win.phone { border-radius: 46px; background: #0d0e16; box-shadow: 0 50px 120px rgba(0,0,0,.6), 0 0 0 2px #2b2d3d, inset 0 0 0 2px #2b2d3d; }
+    .bar { position: absolute; left: 0; right: 0; top: 0; height: 40px; display: flex; align-items: center; gap: 12px; padding: 0 14px; background: #eceef5; border-bottom: 1px solid #d9dcea; }
+    .dots { display: flex; gap: 7px; }
+    .dots i { width: 12px; height: 12px; border-radius: 50%; background: #ff5f57; }
+    .dots i:nth-child(2) { background: #febc2e; } .dots i:nth-child(3) { background: #28c840; }
+    .url { flex: 1; max-width: 640px; margin: 0 auto; height: 26px; border-radius: 8px; background: #fff; color: #3a3f5c; font-size: 13px; display: flex; align-items: center; gap: 6px; padding: 0 12px; white-space: nowrap; overflow: hidden; border: 1px solid #dfe2ee; }
+    .url .lock { color: #1aa260; }
+    .url .caret { width: 1.5px; height: 15px; background: var(--accent); animation: blink 1s steps(1) infinite; }
+    @keyframes blink { 50% { opacity: 0; } }
+    .phone .bar { left: 12px; right: 12px; top: 12px; height: 36px; border-radius: 34px 34px 0 0; padding: 0 16px; background: #f1f2f8; }
+    .phone .dots { display: none; }
+    .phone .url { font-size: 12px; height: 24px; border-radius: 12px; }
+    .site { position: absolute; border: 0; background: #fff; pointer-events: none; }
+    .phone .site { border-radius: 0 0 34px 34px; }
+    .loadbar { position: absolute; height: 3px; background: var(--accent); width: 0; z-index: 3; }
+    .curtain { position: absolute; background: #fff; z-index: 2; transition: opacity .5s; display: grid; place-items: center; color: #8d92b5; font-weight: 700; }
+    .curtain.off { opacity: 0; pointer-events: none; }
 
-    h1, h2 { font-family: var(--display); margin: 0; line-height: 1.08; letter-spacing: -.02em; text-wrap: balance; }
-    h2 { font-size: clamp(1.6rem, 5.6vmin, 3.4rem); }
+    /* Curseur */
+    .cursor { position: absolute; left: 0; top: 0; width: 30px; height: 30px; z-index: 20; pointer-events: none; transform-origin: 3px 3px; transition: transform .12s; filter: drop-shadow(0 3px 5px rgba(0,0,0,.35)); }
+    .cursor.down { transform: scale(.82); }
+    .cursor svg { width: 100%; height: 100%; display: block; overflow: visible; }
+    .ripple { position: absolute; width: 56px; height: 56px; margin: -28px 0 0 -28px; border-radius: 50%; border: 3px solid var(--spark); background: rgba(255,201,48,.25); z-index: 19; pointer-events: none; animation: ripple .55s ease-out forwards; }
+    @keyframes ripple { from { transform: scale(.2); opacity: 1; } to { transform: scale(1.4); opacity: 0; } }
+
+    /* Légendes, touches */
+    .caption { position: fixed; left: 50%; bottom: 84px; transform: translateX(-50%); z-index: 30; width: max-content; max-width: min(92vw, 820px); padding: 14px 24px; border-radius: 18px; background: rgba(9,11,32,.86); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,.14); box-shadow: 0 18px 50px rgba(0,0,0,.45); font-weight: 700; font-size: clamp(1rem, 2.4vmin, 1.35rem); text-align: center; line-height: 1.35; transition: opacity .35s, transform .35s; }
+    .caption.hide { opacity: 0; transform: translateX(-50%) translateY(16px); }
+    .caption.top { bottom: auto; top: 64px; }
+    .caption small { display: block; font-weight: 500; color: var(--muted); font-size: .8em; margin-top: 2px; }
+    .keycap { position: fixed; left: 50%; bottom: 168px; z-index: 31; transform: translateX(-50%) scale(.6); opacity: 0; padding: 10px 18px; min-width: 64px; text-align: center; border-radius: 12px; background: #f6f7ff; color: #12142b; font-weight: 800; font-size: 1.1rem; box-shadow: 0 5px 0 #b9bdd6, 0 14px 30px rgba(0,0,0,.4); transition: transform .15s cubic-bezier(.3,1.6,.5,1), opacity .15s; }
+    .keycap.on { transform: translateX(-50%) scale(1); opacity: 1; }
+    .chapter { position: fixed; right: 16px; top: 14px; z-index: 30; padding: 8px 14px; border-radius: 999px; background: rgba(9,11,32,.7); border: 1px solid rgba(255,255,255,.14); font-weight: 800; font-size: .85rem; letter-spacing: .06em; text-transform: uppercase; color: var(--spark); transition: opacity .3s; }
+
+    /* Cartes titre (début / fin) */
+    .card { position: fixed; inset: 0 0 60px; z-index: 25; display: grid; place-items: center; align-content: center; gap: 18px; padding: 24px 16px; text-align: center; opacity: 0; pointer-events: none; transition: opacity .6s; }
+    .card.on { opacity: 1; pointer-events: auto; }
+    .card h1 { font-family: var(--display); font-size: clamp(2.2rem, 9vmin, 6rem); margin: 0; line-height: 1.05; letter-spacing: -.02em; min-height: 1.1em; }
+    .card h1 .hl { color: var(--spark); }
+    .card p { margin: 0; color: var(--muted); font-size: clamp(1rem, 2.8vmin, 1.5rem); }
     .eyebrow { font-weight: 800; letter-spacing: .18em; text-transform: uppercase; color: var(--spark); font-size: clamp(.75rem, 2vmin, 1rem); }
-    .sub { color: var(--muted); font-size: clamp(1rem, 2.6vmin, 1.4rem); max-width: 34ch; margin: 0 auto; }
-    .hl { color: var(--spark); }
-
-    /* Entrées décalées : style="--d:.4s" règle le moment d'apparition */
-    .scene.on .up { animation: up .7s var(--d, 0s) cubic-bezier(.2,.9,.3,1.25) both; }
-    .scene.on .pop { animation: pop .6s var(--d, 0s) cubic-bezier(.3,1.6,.5,1) both; }
-    .scene.on .drop { animation: drop .8s var(--d, 0s) cubic-bezier(.3,1.5,.5,1) both; }
-    .scene.on .slam { animation: slam .5s var(--d, 0s) cubic-bezier(.2,1.4,.4,1) both; }
-    @keyframes up { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
-    @keyframes pop { from { opacity: 0; transform: scale(.3) rotate(-8deg); } to { opacity: 1; transform: none; } }
-    @keyframes drop { 0% { opacity: 0; transform: translateY(-120px) rotate(-10deg); } 60% { opacity: 1; } 100% { opacity: 1; transform: none; } }
-    @keyframes slam { from { opacity: 0; transform: scale(2.4) rotate(6deg); } to { opacity: 1; transform: none; } }
-
-    /* ---------- Mascotte ---------- */
-    .mascot { width: clamp(110px, 26vmin, 220px); filter: drop-shadow(0 18px 40px rgba(255, 201, 48, .45)); }
-    .mascot svg { width: 100%; height: auto; display: block; overflow: visible; }
-    .scene.on .mascot.bounce svg { animation: hop 1s 1s ease-in-out infinite; transform-origin: 50% 100%; }
-    @keyframes hop { 0%, 100% { transform: translateY(0) scale(1, 1); } 15% { transform: translateY(0) scale(1.08, .9); } 45% { transform: translateY(-14%) scale(.95, 1.06) rotate(-4deg); } 75% { transform: translateY(0) scale(1.05, .95); } }
-    .eyes { animation: blink 3.2s 1.6s infinite; transform-box: fill-box; transform-origin: center; }
-    @keyframes blink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
-    .pupil { animation: look 4s 1s ease-in-out infinite; }
-    @keyframes look { 0%, 40%, 100% { transform: translate(0, 0); } 50%, 70% { transform: translate(.35px, -.15px); } 80% { transform: translate(-.35px, 0); } }
-
-    .title { font-size: clamp(2.2rem, 10vmin, 6.4rem); display: flex; flex-wrap: wrap; justify-content: center; column-gap: .3em; }
-    .title .w { display: inline-flex; }
-    .title .l { display: inline-block; }
-    .scene.on .title .l { animation: drop .7s calc(.9s + var(--i) * 55ms) cubic-bezier(.3,1.6,.5,1) both; }
-    .title .w:last-child { color: var(--spark); }
-    .spark { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--spark); opacity: 0; }
-    .scene.on .spark { animation: burst 1.4s var(--d) ease-out both; }
-    @keyframes burst { 0% { opacity: 1; transform: translate(0, 0) scale(1); } 100% { opacity: 0; transform: translate(var(--x), var(--y)) scale(.2); } }
-
-    /* ---------- Chiffres ---------- */
-    .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(10px, 2vmin, 20px); width: min(1100px, 100%); }
-    .stat { background: rgba(255,255,255,.07); border: 1px solid rgba(255,255,255,.14); border-radius: 22px; padding: clamp(14px, 3vmin, 28px) 10px; backdrop-filter: blur(6px); }
-    .stat b { display: block; font-family: var(--display); font-size: clamp(1.8rem, 7vmin, 4rem); color: var(--spark); font-variant-numeric: tabular-nums; }
-    .stat span { font-weight: 700; font-size: clamp(.9rem, 2.3vmin, 1.2rem); }
-    .stat i { display: block; font-style: normal; font-size: clamp(1.6rem, 5vmin, 2.6rem); }
-
-    /* ---------- Cartes mots ---------- */
-    .cards { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(10px, 2.4vmin, 22px); perspective: 900px; }
-    .flip { width: clamp(120px, 21vmin, 190px); aspect-ratio: 3 / 4; position: relative; transform-style: preserve-3d; }
-    .scene.on .flip { animation: pop .6s var(--d) cubic-bezier(.3,1.6,.5,1) both, flip .8s calc(var(--d) + 1.6s) cubic-bezier(.5,1.6,.4,1) both; }
-    @keyframes flip { to { transform: rotateY(180deg); } }
-    .face { position: absolute; inset: 0; border-radius: 20px; display: grid; place-items: center; align-content: center; gap: 6px; backface-visibility: hidden; -webkit-backface-visibility: hidden; padding: 8px; }
-    .face.front { background: #fff; color: var(--night); font-size: clamp(3rem, 10vmin, 5.6rem); box-shadow: 0 16px 40px rgba(0,0,0,.35); }
-    .face.back { background: linear-gradient(150deg, var(--accent), #6f3dfe); transform: rotateY(180deg); box-shadow: 0 16px 40px rgba(61,90,254,.45); }
-    .face.back b { font-family: var(--display); font-size: clamp(1.1rem, 3.6vmin, 1.8rem); }
-    .face.back small { color: #dfe3ff; font-size: clamp(.85rem, 2.2vmin, 1.1rem); }
-
-    /* ---------- Frise des temps ---------- */
-    .timeline { position: relative; width: min(1000px, 100%); height: clamp(170px, 34vmin, 260px); }
-    .tl-line { position: absolute; left: 4%; right: 4%; top: 55%; height: 6px; border-radius: 6px; background: linear-gradient(90deg, var(--accent-2), var(--spark), var(--pink)); transform-origin: left; }
-    .scene.on .tl-line { animation: grow 1s .5s cubic-bezier(.6,0,.2,1) both; }
-    .tl-line::after { content: ""; position: absolute; right: -14px; top: -9px; border: 12px solid transparent; border-left: 16px solid var(--pink); }
-    @keyframes grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-    .tl-pt { position: absolute; top: 55%; transform: translate(-50%, -50%); display: grid; justify-items: center; }
-    .tl-pt::before { content: ""; width: 18px; height: 18px; border-radius: 50%; background: #fff; box-shadow: 0 0 0 5px rgba(255,255,255,.2); }
-    .tl-pt em { position: absolute; top: 26px; font-style: normal; font-weight: 800; letter-spacing: .12em; font-size: clamp(.7rem, 1.8vmin, .95rem); color: var(--muted); }
-    .tl-chip { position: absolute; transform: translateX(-50%); padding: 8px 14px; border-radius: 999px; font-weight: 800; font-size: clamp(.85rem, 2.5vmin, 1.25rem); white-space: nowrap; color: var(--night); }
-    .tl-chip.past { background: var(--accent-2); }
-    .tl-chip.now { background: var(--spark); }
-    .tl-chip.fut { background: var(--pink); color: #fff; }
-    .tl-chip.perf { background: #fff; }
-    .tl-arc { position: absolute; left: 18%; width: 32%; top: 30%; height: 25%; border: 4px dashed rgba(255,255,255,.7); border-bottom: 0; border-radius: 50% 50% 0 0 / 100% 100% 0 0; }
-
-    /* ---------- Verbes ---------- */
-    .verbs { display: grid; gap: clamp(8px, 1.8vmin, 16px); }
-    .vrow { display: flex; align-items: center; justify-content: center; gap: clamp(6px, 1.6vmin, 14px); flex-wrap: wrap; }
-    .vf { font-family: var(--display); font-size: clamp(1.2rem, 5vmin, 2.8rem); padding: .2em .55em; border-radius: 16px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.16); }
-    .vf.b { color: #fff; }
-    .vf.p { color: var(--spark); }
-    .vf.pp { color: #ff9cc0; }
-    .arrow { color: var(--muted); font-size: clamp(1rem, 3.4vmin, 2rem); }
-
-    /* ---------- Fiche ---------- */
-    .paper { position: relative; background: #fffdf6; color: #1b1d33; border-radius: 18px; padding: clamp(16px, 3.4vmin, 32px) clamp(16px, 4vmin, 40px); width: min(820px, 100%); text-align: left; box-shadow: 0 30px 70px rgba(0,0,0,.45); border-left: 6px solid #ff8fa8; transform: rotate(-1.2deg); }
-    .paper h3 { margin: 0 0 6px; font-family: var(--display); font-size: clamp(1rem, 3vmin, 1.5rem); }
-    .paper ol { margin: 0; padding-left: 1.4em; display: grid; gap: 12px; font-size: clamp(1rem, 3vmin, 1.55rem); }
-    .blank { display: inline-block; min-width: 4.8em; border-bottom: 3px solid var(--accent); color: var(--accent); font-weight: 800; text-align: center; padding: 0 .2em; }
-    .ok { display: inline-block; margin-left: .3em; opacity: 0; transform: scale(0); transition: transform .35s cubic-bezier(.3,1.8,.5,1), opacity .2s; }
-    .ok.show { opacity: 1; transform: scale(1); }
-    .stamp { position: absolute; right: clamp(8px, 3vmin, 30px); bottom: clamp(-30px, -3vmin, -10px); font-family: var(--display); font-size: clamp(1.2rem, 4.4vmin, 2.4rem); color: #e0245e; border: 5px solid #e0245e; border-radius: 14px; padding: .1em .4em; transform: rotate(-12deg); background: #fff; }
-
-    /* ---------- Tableau ---------- */
-    .board { width: min(980px, 100%); background: radial-gradient(120% 120% at 30% 20%, #2c5240, var(--chalk)); border: clamp(10px, 2vmin, 18px) solid #7a4e2a; border-radius: 16px; padding: clamp(26px, 6vmin, 64px) clamp(16px, 4vmin, 44px); box-shadow: 0 30px 70px rgba(0,0,0,.5), inset 0 0 60px rgba(0,0,0,.35); }
-    .board p { margin: 0; font-size: clamp(1.4rem, 5.4vmin, 3.2rem); font-weight: 700; color: #f1f5ec; line-height: 1.35; }
-    .chalk-blank { letter-spacing: .1em; color: rgba(241,245,236,.6); }
-    .chalk-ans { color: #ffd84d; text-decoration: underline wavy rgba(255,216,77,.6); text-underline-offset: 8px; }
-    .board small { display: block; margin-top: 16px; color: rgba(241,245,236,.6); font-size: clamp(.8rem, 2vmin, 1rem); }
-
-    /* ---------- Modes ---------- */
-    .toggle { position: relative; display: grid; grid-template-columns: 1fr 1fr; width: min(520px, 92%); background: rgba(255,255,255,.1); border: 2px solid rgba(255,255,255,.2); border-radius: 999px; padding: 6px; font-weight: 800; font-size: clamp(1rem, 3vmin, 1.4rem); }
-    .toggle span { position: relative; z-index: 1; padding: 12px; transition: color .3s; }
-    .knob { position: absolute; top: 6px; bottom: 6px; left: 6px; width: calc(50% - 6px); border-radius: 999px; background: var(--accent); transition: transform .6s cubic-bezier(.5,1.6,.4,1), background .4s; }
-    .toggle.prof .knob { transform: translateX(100%); background: #c2185b; }
-    .modes { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(10px, 2.4vmin, 22px); width: min(900px, 100%); }
-    .mcard { border-radius: 22px; padding: clamp(14px, 3vmin, 28px); text-align: left; transition: transform .5s, opacity .5s, box-shadow .5s; }
-    .mcard h3 { margin: 0 0 8px; font-family: var(--display); font-size: clamp(1.05rem, 3.2vmin, 1.6rem); }
-    .mcard ul { margin: 0; padding-left: 1.1em; display: grid; gap: 4px; font-size: clamp(.9rem, 2.4vmin, 1.15rem); }
-    .mcard.e { background: linear-gradient(150deg, #3d5afe, #2234b8); }
-    .mcard.p { background: linear-gradient(150deg, #c2185b, #4a148c); }
-    .modes.e-on .mcard.p, .modes.p-on .mcard.e { opacity: .45; transform: scale(.94); }
-    .modes.e-on .mcard.e, .modes.p-on .mcard.p { box-shadow: 0 0 0 4px var(--spark), 0 20px 50px rgba(0,0,0,.4); transform: scale(1.03); }
-
-    /* ---------- Jeux ---------- */
-    .games { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(8px, 2vmin, 18px); width: min(920px, 100%); }
-    .game { background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.15); border-radius: 20px; padding: clamp(10px, 2.4vmin, 20px) 6px; font-weight: 700; font-size: clamp(.8rem, 2.2vmin, 1.05rem); }
-    .game i { display: block; font-style: normal; font-size: clamp(1.8rem, 6vmin, 3rem); }
-    .scene.on .game i { animation: wiggle 1.2s calc(var(--d) + .6s) ease-in-out infinite; }
-    @keyframes wiggle { 0%, 100% { transform: none; } 25% { transform: translateY(-10%) rotate(-8deg); } 50% { transform: none; } 75% { transform: translateY(-5%) rotate(6deg); } }
-
-    /* ---------- Badges ---------- */
-    .badges { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(10px, 2.4vmin, 20px); max-width: 1000px; }
-    .badge { font-family: var(--display); font-size: clamp(1.1rem, 4.4vmin, 2.4rem); padding: .4em .8em; border-radius: 999px; background: #fff; color: var(--night); box-shadow: 0 14px 34px rgba(0,0,0,.35); }
-    .badge:nth-child(2) { background: var(--spark); }
-    .badge:nth-child(3) { background: var(--green); color: #04220f; }
-    .badge:nth-child(4) { background: var(--pink); color: #fff; }
-
-    /* ---------- Fin ---------- */
-    .final-row { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 4vmin, 40px); flex-wrap: wrap; }
-    .qr { width: clamp(120px, 24vmin, 200px); background: #fff; padding: 10px; border-radius: 16px; }
+    .mascot { width: clamp(90px, 20vmin, 170px); filter: drop-shadow(0 16px 36px rgba(255,201,48,.45)); }
+    .mascot svg { display: block; width: 100%; height: auto; animation: hop 1.1s ease-in-out infinite; transform-origin: 50% 100%; }
+    @keyframes hop { 0%, 100% { transform: none; } 15% { transform: scale(1.08, .9); } 45% { transform: translateY(-12%) scale(.95, 1.06) rotate(-4deg); } 75% { transform: scale(1.04, .96); } }
+    .eyes { animation: eyeblink 3.2s 1s infinite; transform-box: fill-box; transform-origin: center; }
+    @keyframes eyeblink { 0%, 92%, 100% { transform: scaleY(1); } 95% { transform: scaleY(.1); } }
+    .badges { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+    .badges span { padding: 8px 16px; border-radius: 999px; font-weight: 800; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.2); }
+    .end-row { display: flex; gap: clamp(16px, 4vmin, 40px); align-items: center; justify-content: center; flex-wrap: wrap; }
+    .qr { width: clamp(110px, 20vmin, 170px); background: #fff; padding: 9px; border-radius: 14px; }
     .qr svg { display: block; width: 100%; height: auto; }
-    .url { font-family: var(--display); font-size: clamp(.8rem, 2.6vmin, 1.25rem); color: var(--spark); word-break: break-all; }
-    .cta { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
-    .btn { display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; padding: 14px 24px; font-weight: 800; font-size: clamp(1rem, 2.6vmin, 1.2rem); text-decoration: none; color: var(--night); background: var(--spark); box-shadow: 0 6px 0 #c99400; transition: transform .15s; }
-    .btn:hover { transform: translateY(-2px); }
+    .link { font-family: var(--display); color: var(--spark); font-size: clamp(.75rem, 2.2vmin, 1.05rem); word-break: break-all; }
+    .btns { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; border: 0; border-radius: 999px; padding: 13px 22px; font-weight: 800; font-size: 1.05rem; text-decoration: none; color: var(--night); background: var(--spark); box-shadow: 0 6px 0 #c99400; }
     .btn.ghost { background: rgba(255,255,255,.12); color: #fff; box-shadow: none; border: 2px solid rgba(255,255,255,.3); }
 
-    /* ---------- Écran de départ ---------- */
-    .poster { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; align-content: center; gap: 20px; text-align: center; padding: 24px 16px; background: radial-gradient(60% 60% at 50% 40%, rgba(61,90,254,.35), transparent 70%), rgba(11,13,36,.86); backdrop-filter: blur(4px); transition: opacity .5s; }
+    /* Écran de départ */
+    .poster { position: fixed; inset: 0; z-index: 40; display: grid; place-items: center; align-content: center; gap: 18px; text-align: center; padding: 24px 16px; background: radial-gradient(60% 60% at 50% 45%, rgba(61,90,254,.35), transparent 70%), rgba(9,11,32,.8); backdrop-filter: blur(6px); transition: opacity .5s; }
     .poster.hide { opacity: 0; pointer-events: none; }
-    .poster h1 { font-size: clamp(1.8rem, 7vmin, 4rem); }
-    .poster .mascot svg { animation: hop 1.2s ease-in-out infinite; transform-origin: 50% 100%; }
-    .play-big { width: clamp(84px, 18vmin, 120px); aspect-ratio: 1; border-radius: 50%; border: 0; background: var(--spark); color: var(--night); font-size: clamp(2rem, 6vmin, 3rem); box-shadow: 0 0 0 0 rgba(255,201,48,.6); animation: pulse 1.8s infinite; }
-    @keyframes pulse { 70% { box-shadow: 0 0 0 26px rgba(255,201,48,0); } 100% { box-shadow: 0 0 0 0 rgba(255,201,48,0); } }
+    .poster h1 { font-family: var(--display); font-size: clamp(1.8rem, 7vmin, 4rem); margin: 0; }
+    .poster p { margin: 0; color: var(--muted); max-width: 36ch; }
+    .play { width: clamp(84px, 17vmin, 116px); aspect-ratio: 1; border-radius: 50%; border: 0; background: var(--spark); color: var(--night); font-size: clamp(2rem, 6vmin, 2.8rem); animation: pulse 1.8s infinite; }
+    @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(255,201,48,.6); } 70% { box-shadow: 0 0 0 26px rgba(255,201,48,0); } 100% { box-shadow: 0 0 0 0 rgba(255,201,48,0); } }
     .linkish { background: none; border: 0; color: var(--muted); text-decoration: underline; font-size: 1rem; }
 
-    /* ---------- Barre de contrôle + égaliseur ---------- */
-    .bars { position: fixed; left: 0; right: 0; bottom: 64px; height: 70px; width: 100%; z-index: 1; opacity: .8; pointer-events: none; }
-    .controls { position: fixed; left: 0; right: 0; bottom: 0; z-index: 10; display: flex; align-items: center; gap: 6px; padding: 10px 16px calc(10px + env(safe-area-inset-bottom)); background: rgba(8,10,28,.75); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,.1); }
-    .controls button, .controls a { background: rgba(255,255,255,.1); color: #fff; border: 0; border-radius: 12px; min-width: 40px; height: 40px; padding: 0 10px; font-size: 1.05rem; display: inline-grid; place-items: center; text-decoration: none; font-weight: 700; flex: none; }
+    /* Commandes */
+    .controls { position: fixed; left: 0; right: 0; bottom: 0; height: 60px; z-index: 35; display: flex; align-items: center; gap: 6px; padding: 0 14px env(safe-area-inset-bottom); background: rgba(8,10,28,.85); backdrop-filter: blur(10px); border-top: 1px solid rgba(255,255,255,.1); }
+    .controls button, .controls a { flex: none; height: 40px; min-width: 40px; padding: 0 10px; border: 0; border-radius: 12px; background: rgba(255,255,255,.1); color: #fff; font-size: 1.05rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; text-decoration: none; white-space: nowrap; }
     .controls button:hover, .controls a:hover { background: rgba(255,255,255,.2); }
-    .controls .site { background: var(--spark); color: var(--night); font-size: .95rem; display: inline-flex; align-items: center; white-space: nowrap; }
-    .progress { flex: 1; display: flex; gap: 4px; min-width: 60px; }
-    .controls .seg { flex: var(--w) 1 0; min-width: 0; height: 8px; border-radius: 6px; background: rgba(255,255,255,.18); overflow: hidden; padding: 0; display: block; }
-    .controls .seg:hover { background: rgba(255,255,255,.32); }
-    .seg i { display: block; height: 100%; width: 0; background: var(--spark); }
+    .controls .go { background: var(--spark); color: var(--night); font-size: .95rem; }
+    .controls button.off { opacity: .45; }
+    .progress { flex: 1; min-width: 40px; display: flex; gap: 4px; }
+    .controls .seg { flex: 1 1 0; min-width: 0; height: 8px; padding: 0; border-radius: 6px; background: rgba(255,255,255,.18); position: relative; overflow: hidden; }
+    .controls .seg.done { background: var(--spark); }
+    .controls .seg.cur { background: rgba(255,201,48,.55); animation: glow 1.2s ease-in-out infinite alternate; }
+    @keyframes glow { to { background: rgba(255,201,48,.95); } }
     @media (max-width: 560px) {
-      .controls { gap: 4px; padding-left: 10px; padding-right: 10px; }
+      .controls { gap: 4px; padding: 0 8px env(safe-area-inset-bottom); }
       .controls .opt { display: none; }
+      .controls .go span { display: none; }
       .progress { gap: 2px; }
-      .controls .site span { display: none; }
-      .stats, .games { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .modes { grid-template-columns: 1fr; }
-      .stage { inset: 0 0 64px; }
-      .bars { height: 46px; }
+      .caption { bottom: 72px; padding: 10px 16px; }
+      .keycap { bottom: 150px; }
+      .chapter { display: none; }
     }
-    @media (prefers-reduced-motion: reduce) {
-      .scene *, .scene, .sky::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; }
-    }
-    body.paused .scene, body.paused .scene * { animation-play-state: paused !important; }
-    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
   </style>
 </head>
-<body class="paused">
+<body>
   <div class="sky" aria-hidden="true"></div>
-  <div class="flash" id="flash" aria-hidden="true"></div>
-  <canvas class="bars" id="bars" aria-hidden="true"></canvas>
+  <div class="chapter" id="chapter" aria-hidden="true">Visite guidée</div>
 
-  <main class="stage" id="stage" aria-live="polite">
-    <!-- 1. Intro -->
-    <section class="scene" data-dur="6500" data-name="Intro">
-      <div class="mascot bounce drop" style="--d:.15s" data-mascot></div>
-      <h1 class="title" data-split>Anglais Éclair</h1>
-      <p class="sub up" style="--d:1.9s">l’anglais <span class="hl">sans délai</span> ⚡</p>
-      <div data-sparks></div>
-    </section>
-
-    <!-- 2. Chiffres -->
-    <section class="scene" data-dur="6000" data-name="Le site">
-      <span class="eyebrow up">Un site pour apprendre l’anglais</span>
-      <h2 class="up" style="--d:.15s">Tout l’anglais, <span class="hl">au même endroit</span></h2>
-      <div class="stats">
-        <div class="stat pop" style="--d:.5s"><i>🧠</i><b data-count="1773">0</b><span>mots en images</span></div>
-        <div class="stat pop" style="--d:.7s"><i>⏳</i><b data-count="12">0</b><span>temps expliqués</span></div>
-        <div class="stat pop" style="--d:.9s"><i>🔁</i><b data-count="238">0</b><span>verbes irréguliers</span></div>
-        <div class="stat pop" style="--d:1.1s"><i>🎮</i><b data-count="17">0</b><span>jeux</span></div>
+  <div class="stage" id="stage">
+    <div class="cam" id="cam">
+      <div class="win" id="win">
+        <div class="bar"><span class="dots"><i></i><i></i><i></i></span><div class="url"><span class="lock">🔒</span><span id="urlText"></span><span class="caret" id="caret"></span></div></div>
+        <iframe class="site" id="site" title="Le site Anglais Éclair, piloté par la démo" tabindex="-1" aria-hidden="true"></iframe>
+        <div class="loadbar" id="loadbar"></div>
+        <div class="curtain" id="curtain">⚡</div>
+        <div class="cursor" id="cursor"><svg viewBox="0 0 24 24"><path d="M4 2.5 19.5 13l-7 1.3 4.2 7.6-3 1.6-4.2-7.7L4.6 21Z" fill="#fff" stroke="#111" stroke-width="1.4" stroke-linejoin="round"/></svg></div>
       </div>
-    </section>
+    </div>
+  </div>
 
-    <!-- 3. Mots -->
-    <section class="scene" data-dur="6000" data-name="Les mots">
-      <span class="eyebrow up">58 thèmes · du débutant à l’avancé</span>
-      <h2 class="up" style="--d:.15s">Des mots <span class="hl">en images</span>, à écouter</h2>
-      <div class="cards">
-        <div class="flip" style="--d:.4s"><div class="face front">🍎</div><div class="face back"><b>apple</b><small>une pomme</small></div></div>
-        <div class="flip" style="--d:.6s"><div class="face front">🐶</div><div class="face back"><b>dog</b><small>un chien</small></div></div>
-        <div class="flip" style="--d:.8s"><div class="face front">🏠</div><div class="face back"><b>house</b><small>une maison</small></div></div>
-        <div class="flip" style="--d:1s"><div class="face front">✈️</div><div class="face back"><b>plane</b><small>un avion</small></div></div>
-      </div>
-      <p class="sub up" style="--d:3.4s">🔊 Chaque mot se prononce avec un accent anglais ou américain.</p>
-    </section>
+  <div class="caption hide" id="caption" role="status" aria-live="polite"></div>
+  <div class="keycap" id="keycap" aria-hidden="true"></div>
 
-    <!-- 4. Temps -->
-    <section class="scene" data-dur="6000" data-name="Les temps">
-      <span class="eyebrow up">Frises, pièges, exercices corrigés</span>
-      <h2 class="up" style="--d:.15s">Les <span class="hl">12 temps</span>, enfin clairs</h2>
-      <div class="timeline">
-        <div class="tl-line"></div>
-        <div class="tl-pt pop" style="left:18%;--d:1.2s"><em>PAST</em></div>
-        <div class="tl-pt pop" style="left:50%;--d:1.4s"><em>NOW</em></div>
-        <div class="tl-pt pop" style="left:82%;--d:1.6s"><em>FUTURE</em></div>
-        <div class="tl-arc up" style="--d:2.9s"></div>
-        <div class="tl-chip past drop" style="left:18%;top:20%;--d:1.8s">I went</div>
-        <div class="tl-chip now drop" style="left:50%;top:76%;--d:2.2s">I am going</div>
-        <div class="tl-chip fut drop" style="left:82%;top:20%;--d:2.6s">I will go</div>
-        <div class="tl-chip perf pop" style="left:34%;top:0;--d:3.2s">I have gone</div>
-      </div>
-    </section>
+  <section class="card" id="cardStart" aria-hidden="true">
+    <div class="mascot" data-mascot></div>
+    <span class="eyebrow">La visite guidée</span>
+    <h1 id="typedTitle"></h1>
+    <p id="typedSub">&nbsp;</p>
+  </section>
 
-    <!-- 5. Verbes -->
-    <section class="scene" data-dur="6000" data-name="Les verbes">
-      <span class="eyebrow up">238 verbes · la fiche du cours en 6 catégories</span>
-      <h2 class="up" style="--d:.15s">Les <span class="hl">verbes irréguliers</span></h2>
-      <div class="verbs">
-        <div class="vrow"><span class="vf b pop" style="--d:.6s">go</span><span class="arrow pop" style="--d:.8s">→</span><span class="vf p pop" style="--d:1s">went</span><span class="arrow pop" style="--d:1.2s">→</span><span class="vf pp pop" style="--d:1.4s">gone</span></div>
-        <div class="vrow"><span class="vf b pop" style="--d:1.8s">take</span><span class="arrow pop" style="--d:2s">→</span><span class="vf p pop" style="--d:2.2s">took</span><span class="arrow pop" style="--d:2.4s">→</span><span class="vf pp pop" style="--d:2.6s">taken</span></div>
-        <div class="vrow"><span class="vf b pop" style="--d:3s">begin</span><span class="arrow pop" style="--d:3.2s">→</span><span class="vf p pop" style="--d:3.4s">began</span><span class="arrow pop" style="--d:3.6s">→</span><span class="vf pp pop" style="--d:3.8s">begun</span></div>
+  <section class="card" id="cardEnd">
+    <div class="end-row">
+      <div class="mascot" data-mascot></div>
+      <div style="display:grid;gap:12px;justify-items:center">
+        <h1 style="font-size:clamp(1.8rem,7vmin,4.4rem)">À toi de <span class="hl">jouer</span> !</h1>
+        <div class="badges"><span>Gratuit</span><span>Sans compte</span><span>Sans pub</span><span>Hors connexion</span></div>
       </div>
-    </section>
-
-    <!-- 6. Fiches -->
-    <section class="scene" data-dur="7500" data-name="Les fiches">
-      <span class="eyebrow up">8 types · 9 999 fiches par type</span>
-      <h2 class="up" style="--d:.15s">Des <span class="hl">fiches</span> à compléter</h2>
-      <div class="paper up" style="--d:.4s">
-        <h3>📝 Fiche n° 1234</h3>
-        <ol>
-          <li>They <span class="blank" data-type="forgot" data-at="1300"></span> (forget) the password last night. <span class="ok" data-at="2500">✅</span></li>
-          <li>She has never <span class="blank" data-type="driven" data-at="2900"></span> (drive) to work. <span class="ok" data-at="4100">✅</span></li>
-          <li>We <span class="blank" data-type="were playing" data-at="4500"></span> (play) football when it started to rain. <span class="ok" data-at="5800">✅</span></li>
-        </ol>
-        <div class="stamp slam" style="--d:6.1s">10 / 10 🌟</div>
-      </div>
-      <p class="sub up" style="--d:.8s">Correction automatique · corrigé · impression</p>
-    </section>
-
-    <!-- 7. Tableau -->
-    <section class="scene" data-dur="6500" data-name="Le tableau">
-      <span class="eyebrow up">Pour la classe</span>
-      <h2 class="up" style="--d:.15s">Le <span class="hl">mode tableau</span></h2>
-      <div class="board up" style="--d:.5s">
-        <p>Anna <span data-reveal="2800"><span class="chalk-blank">________</span></span> (never / work) in an office.</p>
-        <small>Espace : afficher la réponse · → : phrase suivante</small>
-      </div>
-      <p class="sub up" style="--d:1s">On projette, la classe répond, puis on révèle la correction.</p>
-    </section>
-
-    <!-- 8. Modes -->
-    <section class="scene" data-dur="6000" data-name="Élève / Prof">
-      <h2 class="up">Un site, <span class="hl">deux modes</span></h2>
-      <div class="toggle up" style="--d:.3s" data-toggle><div class="knob"></div><span>🎒 Élève</span><span>🍎 Prof</span></div>
-      <div class="modes e-on" data-modes>
-        <div class="mcard e up" style="--d:.6s"><h3>🎒 Élève</h3><ul><li>je révise mes mots</li><li>je joue et je gagne des points</li><li>je fais mes fiches seul</li></ul></div>
-        <div class="mcard p up" style="--d:.8s"><h3>🍎 Enseignant</h3><ul><li>je projette au tableau</li><li>j’imprime fiches et corrigés</li><li>je partage avec un QR code</li></ul></div>
-      </div>
-    </section>
-
-    <!-- 9. Jeux -->
-    <section class="scene" data-dur="5500" data-name="Les jeux">
-      <h2 class="up"><span class="hl">17 jeux</span> pour réviser</h2>
-      <div class="games">
-        <div class="game pop" style="--d:.3s"><i>🖼️</i>Image → mot</div>
-        <div class="game pop" style="--d:.4s"><i>🎧</i>Dictée</div>
-        <div class="game pop" style="--d:.5s"><i>⚡</i>Défi 60 s</div>
-        <div class="game pop" style="--d:.6s"><i>✅</i>Vrai ou faux</div>
-        <div class="game pop" style="--d:.7s"><i>🃏</i>Memory</div>
-        <div class="game pop" style="--d:.8s"><i>🪢</i>Pendu</div>
-        <div class="game pop" style="--d:.9s"><i>🔤</i>Mot mélangé</div>
-        <div class="game pop" style="--d:1s"><i>⏳</i>Quiz des temps</div>
-      </div>
-      <p class="sub up" style="--d:1.4s">+ révisions intelligentes et 8 histoires à écouter</p>
-    </section>
-
-    <!-- 10. Gratuit -->
-    <section class="scene" data-dur="5000" data-name="Gratuit">
-      <div class="badges">
-        <span class="badge slam" style="--d:.2s">Gratuit</span>
-        <span class="badge slam" style="--d:.7s">Sans compte</span>
-        <span class="badge slam" style="--d:1.2s">Hors connexion</span>
-        <span class="badge slam" style="--d:1.7s">Sur téléphone</span>
-      </div>
-      <p class="sub up" style="--d:2.3s">Tes progrès restent sur ton appareil. Aucune pub.</p>
-    </section>
-
-    <!-- 11. Fin -->
-    <section class="scene" data-dur="0" data-name="À toi !">
-      <div class="final-row">
-        <div class="mascot bounce pop" style="--d:.1s" data-mascot></div>
-        <div style="display:grid;gap:12px;justify-items:center">
-          <h2 class="up" style="--d:.2s">À toi de jouer !</h2>
-          <div class="qr pop" style="--d:.6s" id="qr" aria-label="QR code du site"></div>
-          <span class="url up" style="--d:.9s">hnwrc2dwh7-debug.github.io/anglais-eclair</span>
-        </div>
-      </div>
-      <div class="cta up" style="--d:1.2s"><a class="btn" href="./">Ouvrir le site ⚡</a><button class="btn ghost" type="button" data-replay>↺ Revoir</button></div>
-    </section>
-  </main>
+      <div style="display:grid;gap:8px;justify-items:center"><div class="qr" id="qr" aria-label="QR code du site"></div><span class="link">hnwrc2dwh7-debug.github.io/anglais-eclair</span></div>
+    </div>
+    <div class="btns"><a class="btn" href="./">Ouvrir le site ⚡</a><button class="btn ghost" type="button" id="replay">↺ Revoir la démo</button></div>
+  </section>
 
   <div class="poster" id="poster">
     <div class="mascot" data-mascot></div>
-    <span class="eyebrow">Présentation · 1 minute</span>
+    <span class="eyebrow">Démo · 2 minutes</span>
     <h1>Anglais Éclair</h1>
-    <button class="play-big" id="start" type="button" aria-label="Lancer la présentation avec le son">▶</button>
+    <p>Regarde le site se piloter tout seul : recherche, mots en images, fiches corrigées, mode tableau…</p>
+    <button class="play" id="start" type="button" aria-label="Lancer la démo avec le son">▶</button>
     <button class="linkish" id="startMute" type="button">Lancer sans le son</button>
   </div>
 
-  <nav class="controls" aria-label="Contrôles de la présentation">
+  <nav class="controls" aria-label="Commandes de la démo">
     <button type="button" id="restart" class="opt" title="Recommencer (R)" aria-label="Recommencer">⏮</button>
-    <button type="button" id="prev" title="Scène précédente (←)" aria-label="Scène précédente">◀</button>
+    <button type="button" id="prev" title="Étape précédente (←)" aria-label="Étape précédente">◀</button>
     <button type="button" id="play" title="Pause / lecture (Espace)" aria-label="Pause">⏸</button>
-    <button type="button" id="next" title="Scène suivante (→)" aria-label="Scène suivante">▶</button>
+    <button type="button" id="next" title="Étape suivante (→)" aria-label="Étape suivante">▶</button>
     <div class="progress" id="progress"></div>
+    <button type="button" id="music" class="opt" title="Musique" aria-label="Couper la musique">🎵</button>
     <button type="button" id="mute" title="Son (M)" aria-label="Couper le son">🔊</button>
     <button type="button" id="full" class="opt" title="Plein écran (F)" aria-label="Plein écran">⛶</button>
-    <a class="site" href="./" title="Ouvrir le site">⚡<span>&nbsp;Le site</span></a>
+    <a class="go" href="./">⚡<span>&nbsp;Le site</span></a>
   </nav>
 
   <script src="assets/js/vendor/qrcode.js"></script>
   <script>
   (() => {
   "use strict";
-  const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const $ = s => document.querySelector(s);
   const SITE = "https://hnwrc2dwh7-debug.github.io/anglais-eclair/";
+  const SHOWN_URL = "hnwrc2dwh7-debug.github.io/anglais-eclair";
+  const rand = (a, b) => a + Math.random() * (b - a);
 
-  /* ---------- Décor : mascotte, titre lettre par lettre, étincelles, QR ---------- */
-  const MASCOT = `<svg viewBox="0 0 24 24" role="img" aria-label="La mascotte éclair"><g>
-    <path d="M13.5 2 4 13.5h6.5L9 22l10-12h-6.6L13.5 2Z" fill="#ffc930" stroke="#1c1600" stroke-width=".9" stroke-linejoin="round"/>
-    <g class="eyes"><circle cx="9.6" cy="11.2" r="1.15" fill="#fff" stroke="#1c1600" stroke-width=".35"/><circle cx="13.6" cy="11.2" r="1.15" fill="#fff" stroke="#1c1600" stroke-width=".35"/>
-      <g class="pupil"><circle cx="9.8" cy="11.3" r=".55" fill="#1c1600"/><circle cx="13.8" cy="11.3" r=".55" fill="#1c1600"/></g></g>
-    <path d="M10.4 12.9q1.3 1.1 2.6 0" fill="none" stroke="#1c1600" stroke-width=".45" stroke-linecap="round"/>
-    <circle cx="8.1" cy="12.7" r=".5" fill="#ff8a65" opacity=".7"/><circle cx="15" cy="12.7" r=".5" fill="#ff8a65" opacity=".7"/></g></svg>`;
-  $$("[data-mascot]").forEach(m => m.innerHTML = MASCOT);
-  $$("[data-split]").forEach(h => {
-    let i = 0;
-    h.innerHTML = h.textContent.split(" ").map(w => `<span class="w">${[...w].map(c => `<span class="l" style="--i:${i++}">${c}</span>`).join("")}</span>`).join(" ");
-    h.setAttribute("aria-label", h.textContent);
-  });
-  $$("[data-sparks]").forEach(box => {
-    box.innerHTML = Array.from({ length: 22 }, (_, k) => {
-      const a = k / 22 * Math.PI * 2, r = 160 + (k * 37 % 140);
-      return `<span class="spark" style="--x:${Math.cos(a) * r}px;--y:${Math.sin(a) * r}px;--d:${.35 + (k % 4) * .05}s;left:50%;top:38%;background:${["#ffc930", "#fff", "#7c8cff", "#ff4f8b"][k % 4]}"></span>`;
-    }).join("");
-  });
+  /* ---------- Mascotte et QR ---------- */
+  const MASCOT = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 2 4 13.5h6.5L9 22l10-12h-6.6L13.5 2Z" fill="#ffc930" stroke="#1c1600" stroke-width=".9" stroke-linejoin="round"/>
+    <g class="eyes"><circle cx="9.6" cy="11.2" r="1.15" fill="#fff" stroke="#1c1600" stroke-width=".35"/><circle cx="13.6" cy="11.2" r="1.15" fill="#fff" stroke="#1c1600" stroke-width=".35"/><circle cx="9.8" cy="11.3" r=".55" fill="#1c1600"/><circle cx="13.8" cy="11.3" r=".55" fill="#1c1600"/></g>
+    <path d="M10.4 12.9q1.3 1.1 2.6 0" fill="none" stroke="#1c1600" stroke-width=".45" stroke-linecap="round"/></svg>`;
+  document.querySelectorAll("[data-mascot]").forEach(m => m.innerHTML = MASCOT);
   try { const qr = window.qrcode(0, "M"); qr.addData(SITE); qr.make(); $("#qr").innerHTML = qr.createSvgTag({ cellSize: 6, margin: 2, scalable: true }); } catch { $("#qr").remove(); }
 
-  /* ---------- Musique (synthétisée dans le navigateur, aucun fichier) ---------- */
-  let ac = null, master = null, out = null, analyser = null, muted = false, step = 0, nextTime = 0, timer = null, musicOn = false;
-  const BPM = 118, SIXTEENTH = 60 / BPM / 4;
-  const CHORDS = [[48, 55, 60, 64], [43, 50, 59, 62], [45, 52, 60, 64], [41, 48, 57, 60]]; // C · G · Am · F
-  const hz = n => 440 * Math.pow(2, (n - 69) / 12);
-  let noiseBuf = null;
+  /* ---------- Horloge (s'arrête pendant la pause) ---------- */
+  let clock = 0, playing = false, last = 0, runId = 0;
+  const waits = [], tweens = [];
+  class Stop extends Error {}
+  const sleep = ms => new Promise((res, rej) => waits.push({ at: clock + ms, res, rej, id: runId }));
+  const ease = p => p < .5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
+  const tween = (ms, fn, ez = ease) => new Promise((res, rej) => { tweens.push({ t0: clock, ms, fn, ez, res, rej, id: runId }); });
+  const frame = now => {
+    const dt = last ? Math.min(80, now - last) : 0; last = now;
+    if (playing) {
+      clock += dt;
+      for (let i = tweens.length - 1; i >= 0; i--) {
+        const tw = tweens[i];
+        if (tw.id !== runId) { tweens.splice(i, 1); tw.rej(new Stop()); continue; }
+        const p = Math.min(1, (clock - tw.t0) / tw.ms);
+        tw.fn(tw.ez(p));
+        if (p >= 1) { tweens.splice(i, 1); tw.res(); }
+      }
+      for (let i = waits.length - 1; i >= 0; i--) {
+        const w = waits[i];
+        if (w.id !== runId) { waits.splice(i, 1); w.rej(new Stop()); }
+        else if (clock >= w.at) { waits.splice(i, 1); w.res(); }
+      }
+    }
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+  const cancelAll = () => { runId++; [...tweens, ...waits].forEach(x => x.rej(new Stop())); tweens.length = waits.length = 0; };
+
+  /* ---------- Sons (créés par le navigateur, aucun fichier) ---------- */
+  let ac = null, sfxBus = null, musicBus = null, muted = false, musicOn = true, beatTimer = null, step = 0, nextBeat = 0, noiseBuf = null;
   const initAudio = () => {
     if (ac) return;
     const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
     ac = new AC();
-    master = ac.createGain(); master.gain.value = .55;
-    const comp = ac.createDynamicsCompressor();
-    analyser = ac.createAnalyser(); analyser.fftSize = 128; analyser.smoothingTimeConstant = .75;
-    out = ac.createGain(); out.gain.value = muted ? 0 : 1;
-    master.connect(comp); comp.connect(analyser); analyser.connect(out); out.connect(ac.destination);
+    const out = ac.createDynamicsCompressor(); out.connect(ac.destination);
+    sfxBus = ac.createGain(); sfxBus.connect(out);
+    musicBus = ac.createGain(); musicBus.gain.value = .22; musicBus.connect(out);
     noiseBuf = ac.createBuffer(1, ac.sampleRate, ac.sampleRate);
     const d = noiseBuf.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1;
+    applyVolumes();
   };
-  const env = (g, t, a, peak, dec) => { g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(0.0001, t + a + dec); };
-  const kick = t => { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.setValueAtTime(150, t); o.frequency.exponentialRampToValueAtTime(42, t + .14); env(g, t, .004, .9, .3); o.connect(g).connect(master); o.start(t); o.stop(t + .35); };
-  const noise = (t, f, q, peak, dec, type = "highpass") => { const s = ac.createBufferSource(), fl = ac.createBiquadFilter(), g = ac.createGain(); s.buffer = noiseBuf; fl.type = type; fl.frequency.value = f; fl.Q.value = q; env(g, t, .002, peak, dec); s.connect(fl).connect(g).connect(master); s.start(t); s.stop(t + dec + .05); };
-  const tone = (t, n, type, peak, dec, cut = 2600) => { const o = ac.createOscillator(), fl = ac.createBiquadFilter(), g = ac.createGain(); o.type = type; o.frequency.value = hz(n); fl.type = "lowpass"; fl.frequency.value = cut; env(g, t, .006, peak, dec); o.connect(fl).connect(g).connect(master); o.start(t); o.stop(t + dec + .05); };
-  const playStep = (s, t) => {
-    const bar = Math.floor(s / 16), i = s % 16, ch = CHORDS[bar % 4];
-    if (i % 4 === 0) kick(t);
-    if (i === 4 || i === 12) noise(t, 1800, .8, .35, .16, "bandpass");
-    if (i % 2 === 0) noise(t, 7000, .5, i % 4 === 2 ? .12 : .06, .05);
-    if (i % 2 === 0) tone(t, ch[0] - 12, "sawtooth", .2, SIXTEENTH * 1.6, 420);
-    tone(t, ch[[1, 2, 3, 2][i % 4]] + 12, "square", .045, SIXTEENTH * 1.2, 3000);
-    if (i === 0) ch.slice(1).forEach(n => tone(t, n + 12, "triangle", .05, SIXTEENTH * 14, 1800));
+  const applyVolumes = () => { if (!ac) return; sfxBus.gain.value = muted ? 0 : 1; musicBus.gain.value = muted || !musicOn ? 0 : .22; };
+  const env = (g, t, a, peak, dec) => { g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(peak, t + a); g.gain.exponentialRampToValueAtTime(.0001, t + a + dec); };
+  const noise = (bus, t, type, f, q, peak, dec) => { const s = ac.createBufferSource(), fl = ac.createBiquadFilter(), g = ac.createGain(); s.buffer = noiseBuf; s.loop = true; fl.type = type; fl.frequency.value = f; fl.Q.value = q; env(g, t, .001, peak, dec); s.connect(fl).connect(g).connect(bus); s.start(t, Math.random() * .5); s.stop(t + dec + .05); };
+  const tone = (bus, t, f, type, peak, dec, cut = 4000) => { const o = ac.createOscillator(), fl = ac.createBiquadFilter(), g = ac.createGain(); o.type = type; o.frequency.value = f; fl.type = "lowpass"; fl.frequency.value = cut; env(g, t, .004, peak, dec); o.connect(fl).connect(g).connect(bus); o.start(t); o.stop(t + dec + .05); };
+  const sfx = {
+    click() { if (!ac) return; const t = ac.currentTime; noise(sfxBus, t, "bandpass", 3200, 1.2, .55, .025); tone(sfxBus, t, 1500, "sine", .12, .03); noise(sfxBus, t + .045, "bandpass", 2400, 1.2, .3, .02); },
+    key() { if (!ac) return; const t = ac.currentTime; noise(sfxBus, t, "bandpass", rand(2600, 4200), 1.5, rand(.28, .42), .022); tone(sfxBus, t, rand(150, 210), "sine", .07, .03); },
+    space() { if (!ac) return; const t = ac.currentTime; noise(sfxBus, t, "bandpass", 1500, 1, .45, .04); tone(sfxBus, t, 120, "sine", .12, .05); },
+    whoosh() { if (!ac) return; const t = ac.currentTime, s = ac.createBufferSource(), fl = ac.createBiquadFilter(), g = ac.createGain(); s.buffer = noiseBuf; fl.type = "bandpass"; fl.Q.value = 1.5; fl.frequency.setValueAtTime(300, t); fl.frequency.exponentialRampToValueAtTime(3500, t + .4); env(g, t, .15, .16, .3); s.connect(fl).connect(g).connect(sfxBus); s.start(t); s.stop(t + .55); },
+    pop() { if (!ac) return; const t = ac.currentTime; const o = ac.createOscillator(), g = ac.createGain(); o.frequency.setValueAtTime(420, t); o.frequency.exponentialRampToValueAtTime(900, t + .08); env(g, t, .005, .2, .12); o.connect(g).connect(sfxBus); o.start(t); o.stop(t + .2); },
+    win() { if (!ac) return; const t = ac.currentTime; [72, 76, 79, 84].forEach((n, i) => tone(sfxBus, t + i * .09, 440 * Math.pow(2, (n - 69) / 12), "triangle", .16, .35)); },
+    wrong() { if (!ac) return; const t = ac.currentTime; tone(sfxBus, t, 220, "square", .06, .18, 900); tone(sfxBus, t + .1, 185, "square", .06, .25, 900); }
   };
-  const schedule = () => { while (nextTime < ac.currentTime + .12) { playStep(step++, nextTime); nextTime += SIXTEENTH; } };
-  const startMusic = () => { if (!ac || musicOn) return; musicOn = true; master.gain.cancelScheduledValues(ac.currentTime); master.gain.setValueAtTime(.55, ac.currentTime); nextTime = ac.currentTime + .05; timer = setInterval(schedule, 25); };
-  const stopMusic = (fade = 2.5) => { if (!ac || !musicOn) return; musicOn = false; clearInterval(timer); const t = ac.currentTime; master.gain.setValueAtTime(master.gain.value, t); master.gain.linearRampToValueAtTime(0.0001, t + fade); };
-  const thunder = () => { if (!ac) return; const t = ac.currentTime; noise(t, 900, .4, .9, 1.4, "lowpass"); noise(t + .08, 300, .3, .7, 1.8, "lowpass"); };
-  const whoosh = () => { if (!ac) return; const t = ac.currentTime, s = ac.createBufferSource(), fl = ac.createBiquadFilter(), g = ac.createGain(); s.buffer = noiseBuf; fl.type = "bandpass"; fl.Q.value = 2; fl.frequency.setValueAtTime(400, t); fl.frequency.exponentialRampToValueAtTime(5000, t + .35); env(g, t, .12, .22, .3); s.connect(fl).connect(g).connect(master); s.start(t); s.stop(t + .5); };
-  const ding = () => { if (!ac) return; const t = ac.currentTime; tone(t, 84, "sine", .2, .4, 8000); tone(t + .08, 91, "sine", .16, .5, 8000); };
+  /* Petite boucle lo-fi en fond */
+  const CHORDS = [[48, 55, 64, 67], [45, 52, 60, 64], [41, 48, 57, 60], [43, 50, 59, 62]];
+  const hz = n => 440 * Math.pow(2, (n - 69) / 12), SIX = 60 / 92 / 4;
+  const beat = (s, t) => {
+    const i = s % 16, ch = CHORDS[Math.floor(s / 16) % 4];
+    if (i === 0 || i === 10) { const o = ac.createOscillator(), g = ac.createGain(); o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(45, t + .15); env(g, t, .004, .8, .28); o.connect(g).connect(musicBus); o.start(t); o.stop(t + .32); }
+    if (i === 4 || i === 12) noise(musicBus, t, "bandpass", 1700, .7, .3, .14);
+    if (i % 2 === 0) noise(musicBus, t, "highpass", 7500, .6, i % 4 === 2 ? .09 : .04, .04);
+    if (i === 0) ch.forEach(n => tone(musicBus, t, hz(n), "triangle", .07, SIX * 15, 1400));
+    if (i % 4 === 2) tone(musicBus, t, hz(ch[(i / 2) % 4] + 12), "sine", .05, SIX * 3, 3000);
+  };
+  const startMusic = () => { if (!ac || beatTimer) return; nextBeat = ac.currentTime + .05; beatTimer = setInterval(() => { while (nextBeat < ac.currentTime + .15) { beat(step++, nextBeat); nextBeat += SIX; } }, 30); };
+  const stopMusic = () => { clearInterval(beatTimer); beatTimer = null; };
 
-  /* ---------- Égaliseur (« musique visuelle ») ---------- */
-  const cv = $("#bars"), cx = cv.getContext("2d"); let bins = null;
-  const drawBars = now => {
-    const w = cv.clientWidth, h = cv.clientHeight, dpr = Math.min(2, devicePixelRatio || 1);
-    if (cv.width !== w * dpr) { cv.width = w * dpr; cv.height = h * dpr; }
-    cx.setTransform(dpr, 0, 0, dpr, 0, 0); cx.clearRect(0, 0, w, h);
-    const n = Math.max(16, Math.min(48, Math.floor(w / 22))), bw = w / n;
-    if (analyser && musicOn) { bins = bins || new Uint8Array(analyser.frequencyBinCount); analyser.getByteFrequencyData(bins); }
-    for (let k = 0; k < n; k++) {
-      let v;
-      if (analyser && bins && musicOn) v = bins[Math.floor(k / n * bins.length * .7)] / 255;
-      else v = playing ? .25 + .2 * Math.sin(now / 260 + k * .7) * Math.sin(now / 410 + k * .3) : .06;
-      const bh = Math.max(3, v * h);
-      const grad = cx.createLinearGradient(0, h - bh, 0, h);
-      grad.addColorStop(0, k % 3 === 0 ? "#ff4f8b" : k % 3 === 1 ? "#ffc930" : "#7c8cff"); grad.addColorStop(1, "rgba(61,90,254,.15)");
-      cx.fillStyle = grad; cx.beginPath(); cx.roundRect ? cx.roundRect(k * bw + 3, h - bh, bw - 6, bh, 4) : cx.rect(k * bw + 3, h - bh, bw - 6, bh); cx.fill();
+  /* ---------- Fenêtre (ordinateur ou téléphone) et caméra ---------- */
+  const stage = $("#stage"), cam = $("#cam"), win = $("#win"), site = $("#site"), cursor = $("#cursor");
+  let L = {};
+  const layout = () => {
+    const phone = innerWidth < 700 || innerHeight > innerWidth * 1.15;
+    L = phone ? { phone, W: 414, H: 860, fx: 12, fy: 48, fw: 390, fh: 800 } : { phone, W: 1280, H: 800, fx: 0, fy: 40, fw: 1280, fh: 760 };
+    win.classList.toggle("phone", phone);
+    Object.assign(win.style, { width: L.W + "px", height: L.H + "px" });
+    Object.assign(site.style, { left: L.fx + "px", top: L.fy + "px", width: L.fw + "px", height: L.fh + "px" });
+    Object.assign($("#curtain").style, { left: L.fx + "px", top: L.fy + "px", width: L.fw + "px", height: L.fh + "px", borderRadius: phone ? "0 0 34px 34px" : "0" });
+    Object.assign($("#loadbar").style, { left: L.fx + "px", top: L.fy + "px" });
+    const sw = stage.clientWidth, sh = stage.clientHeight;
+    L.s0 = Math.min((sw - 32) / L.W, (sh - 36) / L.H);
+    L.sw = sw; L.sh = sh;
+  };
+  const view = { x: 0, y: 0, z: 1, rise: 0, fade: 1 };
+  const clampView = (x, y, z) => {
+    const s = L.s0 * z, hw = L.sw / 2 / s, hh = L.sh / 2 / s;
+    return { x: hw * 2 >= L.W ? L.W / 2 : Math.min(L.W - hw, Math.max(hw, x)), y: hh * 2 >= L.H ? L.H / 2 : Math.min(L.H - hh, Math.max(hh, y)), z };
+  };
+  const applyCam = () => {
+    const s = L.s0 * view.z;
+    cam.style.transform = `translate(${L.sw / 2}px, ${L.sh / 2 + view.rise}px) scale(${s}) translate(${-view.x}px, ${-view.y}px)`;
+    cam.style.opacity = view.fade;
+  };
+  const camTo = (x, y, z, ms = 800) => {
+    const a = { ...view }, b = clampView(x, y, z);
+    if (Math.abs(b.z - a.z) > .15) sfx.whoosh();
+    return tween(ms, p => { view.x = a.x + (b.x - a.x) * p; view.y = a.y + (b.y - a.y) * p; view.z = a.z + (b.z - a.z) * p; applyCam(); });
+  };
+  const camHome = (ms = 800) => camTo(L.W / 2, L.H / 2, 1, ms);
+  addEventListener("resize", () => { layout(); Object.assign(view, clampView(view.x, view.y, view.z)); applyCam(); });
+
+  /* ---------- Accès au site dans la fenêtre ---------- */
+  const W = () => site.contentWindow, D = () => site.contentDocument;
+  const vis = el => { if (!el) return false; const r = el.getBoundingClientRect(); return r.width > 0 && r.height > 0 && W().getComputedStyle(el).visibility !== "hidden"; };
+  const find = sel => [...D().querySelectorAll(sel)].find(vis) || null;
+  const waitFor = async (sel, ms = 4000) => { for (let t = 0; t < ms; t += 60) { const el = find(sel); if (el) return el; await sleep(60); } return null; };
+  const DEMO_STATE = () => JSON.stringify({ v: 1, settings: { showHelp: false, sfx: false, autoplay: false, mode: "eleve", theme: "light", accent: "eclair", bg: "auto", motion: true, name: "" }, ui: { welcomed: 1, testDone: 1 } });
+  const loadSite = hash => new Promise(res => {
+    try { localStorage.setItem("anglais-eclair-demo", DEMO_STATE()); } catch {}
+    site.onload = () => {
+      const st = D().createElement("style");
+      st.textContent = `html{scrollbar-width:none}::-webkit-scrollbar{display:none}*{cursor:none!important}
+        .demo-hover{box-shadow:0 0 0 3px #ffc930,0 14px 30px rgba(0,0,0,.18)!important;translate:0 -2px;transition:translate .18s,box-shadow .18s!important}`;
+      D().head.appendChild(st);
+      W().addEventListener("hashchange", showUrl);
+      const say = W().Eclair && W().Eclair.say; if (say) W().Eclair.say = (...a) => { if (!muted) say(...a); };
+      showUrl(); res();
+    };
+    site.src = `index.html?demo=1&v=${Date.now()}#${hash}`;
+  });
+  let urlTyping = false;
+  const showUrl = () => { if (!urlTyping) $("#urlText").textContent = SHOWN_URL + "/" + (W().location.hash || ""); };
+
+  /* ---------- Curseur ---------- */
+  const cur = { x: 0, y: 0 };
+  const placeCursor = () => { cursor.style.left = cur.x - 3 + "px"; cursor.style.top = cur.y - 3 + "px"; };
+  const centerOf = el => { const r = el.getBoundingClientRect(); return { x: L.fx + r.left + r.width / 2, y: L.fy + r.top + r.height / 2 }; };
+  const pointOf = el => { const r = el.getBoundingClientRect(); return { x: L.fx + r.left + Math.min(r.width / 2, 60 + r.width * .25), y: L.fy + r.top + r.height / 2 }; };
+  let hovered = null;
+  const hover = el => { if (hovered && hovered !== el) hovered.classList.remove("demo-hover"); hovered = el; if (el) el.classList.add("demo-hover"); };
+  const isFixed = el => !!el.closest(".topbar, .drawer, .tabbar, .board, .toast");
+  const ensureVisible = async el => {
+    if (isFixed(el)) { if (el.closest(".drawer")) { el.scrollIntoView({ block: "nearest" }); await sleep(100); } return; }
+    const r = el.getBoundingClientRect(), top = L.phone ? 90 : 90;
+    if (r.top >= top && r.bottom <= L.fh - 90) return;
+    const from = W().scrollY, to = Math.max(0, from + r.top - L.fh * .35);
+    await tween(Math.min(1100, 350 + Math.abs(to - from) * .6), p => W().scrollTo(0, from + (to - from) * p));
+  };
+  const scrollBy = async (dy, ms = 1200) => { const from = W().scrollY; await tween(ms, p => W().scrollTo(0, from + dy * p)); };
+  const moveTo = async (target, { follow = true, hoverIt = true } = {}) => {
+    const el = target.nodeType ? target : null;
+    if (el) await ensureVisible(el);
+    const p = el ? pointOf(el) : target;
+    const a = { ...cur }, dist = Math.hypot(p.x - a.x, p.y - a.y);
+    const ms = Math.max(380, Math.min(950, dist * .9));
+    const nx = -(p.y - a.y) / (dist || 1), ny = (p.x - a.x) / (dist || 1), bend = dist * rand(-.15, .15);
+    const cx = (a.x + p.x) / 2 + nx * bend, cy = (a.y + p.y) / 2 + ny * bend;
+    if (follow && view.z > 1.05) camTo(view.x + (p.x - view.x) * .6, view.y + (p.y - view.y) * .6, view.z, ms);
+    if (hoverIt) hover(null);
+    await tween(ms, t => { const u = 1 - t; cur.x = u * u * a.x + 2 * u * t * cx + t * t * p.x; cur.y = u * u * a.y + 2 * u * t * cy + t * t * p.y; placeCursor(); });
+    if (el && hoverIt) hover(el.closest("a, button, input, select, summary, .word-card, .game-card, .swatch") || el);
+  };
+  const press = async () => {
+    cursor.classList.add("down"); sfx.click();
+    const r = document.createElement("div"); r.className = "ripple"; r.style.left = cur.x + "px"; r.style.top = cur.y + "px"; win.appendChild(r); setTimeout(() => r.remove(), 600);
+    await sleep(120); cursor.classList.remove("down");
+  };
+  const click = async (target, opts) => {
+    const el = typeof target === "string" ? await waitFor(target) : target;
+    if (!el) return null;
+    await moveTo(el, opts); await sleep(140); await press();
+    hover(null);
+    if (el.matches("input, textarea")) el.focus(); else el.click();
+    await sleep(320);
+    return el;
+  };
+  const keycap = async label => { const k = $("#keycap"); k.textContent = label; k.classList.add("on"); await sleep(420); k.classList.remove("on"); };
+  const type = async (el, text, { speed = 1 } = {}) => {
+    el.focus();
+    for (const ch of text) {
+      el.value += ch; el.dispatchEvent(new (W().Event)("input", { bubbles: true }));
+      ch === " " ? sfx.space() : sfx.key();
+      await sleep(rand(60, 140) / speed);
     }
   };
+  const key = async (k, target, label) => {
+    (target || D()).dispatchEvent(new (W().KeyboardEvent)("keydown", { key: k, bubbles: true }));
+    k === " " ? sfx.space() : sfx.key();
+    await keycap(label || k);
+  };
+  const caption = async (txt, sub = "", top = false) => {
+    const c = $("#caption");
+    c.classList.add("hide"); await sleep(250); c.classList.toggle("top", top);
+    c.innerHTML = txt ? `${txt}${sub ? `<small>${sub}</small>` : ""}` : "";
+    if (txt) c.classList.remove("hide");
+  };
+  const chapterLabel = txt => { $("#chapter").textContent = txt; };
+
+  /* Navigation par les vrais menus du site */
+  const nav = async route => {
+    if (!L.phone) {
+      const link = D().querySelector(`#menus a[data-href="${route}"]`);
+      if (link) { await click(link.closest(".menu").querySelector(".menu-btn")); await sleep(350); await click(link); }
+      else W().location.hash = route;
+      D().querySelectorAll(".menu.open").forEach(m => m.classList.remove("open"));
+    } else {
+      const tab = find(`#tabbar a[data-tab="${route}"]`);
+      if (tab) { await click(tab); }
+      else {
+        await click("#burger"); await sleep(380);
+        const link = D().querySelector(`#drawerMenus a[data-href="${route}"]`);
+        const det = link && link.closest("details");
+        if (det && !det.open) { await click(det.querySelector("summary")); await sleep(250); }
+        if (link) await click(link); else W().location.hash = route;
+        W().Eclair && W().Eclair.closeDrawer && W().Eclair.closeDrawer();
+      }
+    }
+    await sleep(450);
+  };
+  const silentGo = async hash => { W().location.hash = hash; await sleep(450); W().scrollTo(0, 0); };
+
+  /* ---------- Le scénario ---------- */
+  const FICHE = { type: "preterit", opt: "fiche", n: 5, seed: 1234 };
+  const ficheHash = `fiche-${FICHE.type}-${FICHE.opt}-${FICHE.n}-${FICHE.seed}`;
+  const CHAPTERS = [
+    { name: "Bienvenue", start: "accueil", run: async () => {
+      const card = $("#cardStart"); card.classList.add("on");
+      view.fade = 0; view.rise = 300; applyCam();
+      await sleep(500);
+      const h = $("#typedTitle"); h.textContent = "";
+      for (const ch of "Anglais Éclair") { h.innerHTML = h.textContent + ch; sfx.key(); await sleep(rand(70, 120)); }
+      h.innerHTML = 'Anglais <span class="hl">Éclair</span>'; sfx.pop();
+      await sleep(250); $("#typedSub").textContent = "l’anglais sans délai ⚡";
+      await sleep(1500);
+      card.classList.remove("on"); sfx.whoosh();
+      await tween(900, p => { view.fade = p; view.rise = 300 * (1 - p); applyCam(); });
+      // On tape l'adresse du site
+      urlTyping = true; $("#urlText").textContent = ""; $("#curtain").classList.remove("off");
+      await camTo(L.phone ? L.W / 2 : 640, 20, L.phone ? 1.6 : 2.1, 700);
+      for (const ch of SHOWN_URL) { $("#urlText").textContent += ch; sfx.key(); await sleep(rand(30, 70)); }
+      await key("Enter", null, "Entrée ⏎");
+      urlTyping = false;
+      await tween(500, p => { $("#loadbar").style.width = L.fw * p + "px"; });
+      $("#curtain").classList.add("off"); $("#loadbar").style.width = 0; showUrl();
+      await camHome(800);
+    } },
+    { name: "Accueil", start: "accueil", run: async () => {
+      await caption("🏠 Chaque jour, ta séance est prête", "Points, série de jours, mot du jour…");
+      await moveTo(find(".hero h1"));
+      { const c = centerOf(find(".hero")); await camTo(c.x, c.y, 1.25, 800); }
+      await moveTo(find(".hero .btn.spark")); await sleep(700);
+      await moveTo(find(".hero .btn.ghost")); await sleep(500);
+      const ring = find(".ring-wrap"); if (ring) { await moveTo(ring); await sleep(500); }
+      await camHome(700);
+      const wotd = find(".wotd") || find("[class*=wotd]");
+      if (wotd) { await moveTo(wotd); await sleep(400); const s = wotd.querySelector(".say, [data-say]"); if (s) await click(s); await sleep(500); }
+    } },
+    { name: "Recherche", start: "accueil", run: async () => {
+      await caption("🔎 Cherche n’importe quel mot", "en anglais ou en français, les résultats s’affichent pendant que tu tapes");
+      let input;
+      if (L.phone) { await click("#burger"); await sleep(380); input = await click("#drawerSearchInput"); }
+      else input = await click("#searchInput");
+      const p = centerOf(input); await camTo(p.x, p.y + 60, L.phone ? 1.4 : 1.7, 700);
+      await type(input, "butt");
+      await key("Enter", null, "Entrée ⏎");
+      (input.form.requestSubmit ? input.form.requestSubmit() : input.form.dispatchEvent(new (W().Event)("submit", { cancelable: true })));
+      await sleep(500);
+      const rq = await waitFor("#rq");
+      await camTo(centerOf(rq).x, centerOf(rq).y + 160, L.phone ? 1.2 : 1.3, 700);
+      await moveTo(rq);
+      await type(rq, "erfly");
+      await sleep(400);
+      const row = await waitFor("#res .word-list .say, #res .say");
+      if (row) { await caption("🔊 …et écoute la prononciation", "accent anglais, américain, australien…"); await click(row); await sleep(800); }
+      await camHome(700);
+    } },
+    { name: "Mots en images", start: "accueil", run: async () => {
+      await caption("🧠 1 773 mots en images, rangés en 58 thèmes", "du débutant à l’avancé");
+      await nav("vocabulaire");
+      const th = await waitFor('a[href="#theme-wild"]');
+      if (th) { await moveTo(th); await sleep(300); await click(th); }
+      await sleep(500);
+      await caption("🃏 Des cartes à écouter, retourner et mettre en favoris");
+      const cards = [...D().querySelectorAll(".word-card")].filter(vis);
+      for (const c of cards.slice(0, L.phone ? 2 : 4)) { await moveTo(c); await sleep(260); }
+      const fav = cards[1] && cards[1].querySelector(".star, [data-fav]");
+      if (fav) { await click(fav); sfx.pop(); }
+      await scrollBy(L.phone ? 700 : 520, 1400);
+      const more = [...D().querySelectorAll(".word-card")].filter(c => { const r = c.getBoundingClientRect(); return r.top > 120 && r.bottom < L.fh - 60; });
+      for (const c of more.slice(0, 3)) { await moveTo(c); await sleep(220); }
+      W().scrollTo(0, 0);
+    } },
+    { name: "Les 12 temps", start: "accueil", run: async () => {
+      await caption("⏳ Les 12 temps, enfin clairs", "frise, construction, pièges et exercices corrigés");
+      await nav("temps");
+      const pp = await waitFor('a[href="#temps-present-perfect"]');
+      if (pp) { await moveTo(pp); await sleep(400); await click(pp); }
+      await sleep(600);
+      const tl = find(".timeline, .tl, svg");
+      if (tl) await ensureVisible(tl);
+      await scrollBy(L.phone ? 600 : 420, 1600);
+      await sleep(500);
+      W().scrollTo(0, 0);
+    } },
+    { name: "Fiches d’exercices", start: "accueil", run: async () => {
+      await caption("📝 Des fiches à compléter", "8 types × 9 999 fiches numérotées, avec le corrigé");
+      await nav("fiches");
+      const ft = await waitFor("#ftype");
+      await click(ft); ft.value = FICHE.type; ft.dispatchEvent(new (W().Event)("input", { bubbles: true })); sfx.click(); await sleep(450);
+      const fo = await waitFor("#fopt"); await click(fo); fo.value = FICHE.opt; fo.dispatchEvent(new (W().Event)("input", { bubbles: true })); await sleep(250);
+      const fc = await waitFor("#fcount"); await click(fc); fc.value = String(FICHE.n); fc.dispatchEvent(new (W().Event)("input", { bubbles: true })); await sleep(250);
+      const fs = await waitFor("#fseed"); await click(fs); fs.select(); fs.value = ""; await type(fs, String(FICHE.seed), { speed: 1.4 });
+      await click("#fgo");
+      await sleep(500);
+      const fx = W().Eclair.makeFiche(FICHE.type, FICHE.opt, FICHE.n, FICHE.seed);
+      await caption("✍️ On écrit les réponses…", "Entrée passe à la phrase suivante");
+      const inputs = [...D().querySelectorAll(".sheet-item input")];
+      await click(inputs[0]);
+      { const c = centerOf(inputs[0].closest(".sheet") || inputs[0]); await camTo(c.x, c.y, L.phone ? 1.2 : 1.4, 700); }
+      for (let i = 0; i < inputs.length; i++) {
+        const it = fx.items[i];
+        const wrong = i === 3 ? ((it.q.match(/\(([a-z]+)\)/) || [, "go"])[1] + "ed") : null;
+        if (D().activeElement !== inputs[i]) inputs[i].focus();
+        await moveTo(inputs[i], { hoverIt: false });
+        await type(inputs[i], wrong || it.show, { speed: 1.2 });
+        if (i < inputs.length - 1) await key("Enter", inputs[i], "Entrée ⏎");
+      }
+      await caption("✅ …puis on corrige : les erreurs s’affichent en rouge");
+      await click('[data-act="check"]');
+      sfx.win(); setTimeout(sfx.wrong, 500);
+      const sc = await waitFor("#sheetScore .feedback");
+      if (sc) await camTo(centerOf(sc).x, centerOf(sc).y - 140, L.phone ? 1.15 : 1.25, 700);
+      await sleep(1600);
+      await camHome(600);
+    } },
+    { name: "Mode tableau", start: ficheHash, run: async () => {
+      await caption("🧑‍🏫 Le mode tableau : on projette en classe", "Espace révèle la réponse, les flèches changent de phrase", true);
+      W().scrollTo(0, 0);
+      await click('[data-act="board"]');
+      await sleep(700);
+      await moveTo({ x: L.fx + L.fw * .5, y: L.fy + L.fh * .78 }, { hoverIt: false });
+      await sleep(600);
+      await key(" ", null, "Espace"); await sleep(900);
+      await key("ArrowRight", null, "→"); await sleep(900);
+      await key(" ", null, "Espace"); await sleep(900);
+      await click('.board [data-b="list"]'); await sleep(700);
+      await click('.board [data-b="show"]'); await sleep(1200);
+      await key("Escape", null, "Échap");
+    } },
+    { name: "Élève / Prof", start: "accueil", run: async () => {
+      await caption("🎒 Un mode élève, 🍎 un mode enseignant", "on change d’un simple clic, en haut de l’écran");
+      const brand = find(".brand"); if (brand) await click(brand);
+      const mb = await waitFor("#modeBtn");
+      await moveTo(mb); await camTo(centerOf(mb).x, centerOf(mb).y + 120, L.phone ? 1.4 : 1.7, 700); await sleep(500);
+      await click(mb); sfx.pop();
+      await sleep(400); await camHome(700);
+      const cards = [...D().querySelectorAll("[data-tq]")].filter(vis);
+      await ensureVisible(cards[0] || find(".prof-hero"));
+      for (const c of cards.slice(0, L.phone ? 2 : 4)) { await moveTo(c); await sleep(280); }
+      W().scrollTo(0, 0); await sleep(200);
+      await click("#modeBtn"); sfx.pop();
+    } },
+    { name: "Réglages", start: "accueil", run: async () => {
+      await caption("🎨 Couleurs, fond, police, voix… tout se règle");
+      if (L.phone) await nav("reglages"); else await click(".set-btn");
+      await sleep(400);
+      for (const id of ["lavande", "menthe", "bonbon"]) { const s = await waitFor(`[data-swatch="${id}"]`); if (s) { await click(s); await sleep(450); } }
+      const dark = await waitFor('[data-seg="theme"][data-v="dark"]');
+      if (dark) { await caption("🌙 Même un mode sombre"); await click(dark); await sleep(900); }
+      const light = await waitFor('[data-seg="theme"][data-v="light"]'); if (light) await click(light);
+      const back = await waitFor('[data-swatch="eclair"]'); if (back) await click(back);
+      W().scrollTo(0, 0);
+    } },
+    { name: "Jeux", start: "accueil", run: async () => {
+      await caption("🎮 17 jeux pour réviser en s’amusant", "dictée, défi 60 s, memory, pendu, quiz des temps…");
+      await nav("jeux");
+      const games = [...D().querySelectorAll(".game-card")].filter(vis);
+      for (const g of games.slice(0, L.phone ? 3 : 6)) { await moveTo(g); sfx.pop(); await sleep(200); }
+      await scrollBy(L.phone ? 500 : 300, 1000);
+      const more = [...D().querySelectorAll(".game-card")].filter(c => { const r = c.getBoundingClientRect(); return r.top > 120 && r.bottom < L.fh - 60; });
+      for (const g of more.slice(-3)) { await moveTo(g); sfx.pop(); await sleep(200); }
+    } },
+    { name: "À toi !", start: "accueil", run: async () => {
+      await caption("");
+      hover(null);
+      await moveTo({ x: L.W - 40, y: L.H + 40 }, { follow: false, hoverIt: false });
+      await camHome(500);
+      sfx.whoosh();
+      await tween(900, p => { view.fade = 1 - p; view.z = 1 - .15 * p; applyCam(); });
+      $("#cardEnd").classList.add("on"); sfx.win();
+      await sleep(4000);
+      stopMusic();
+    } }
+  ];
 
   /* ---------- Lecteur ---------- */
-  const scenes = $$(".scene"), body = document.body;
-  let cur = -1, t = 0, playing = false, last = 0, done = new Set();
   const prog = $("#progress");
-  prog.innerHTML = scenes.map((s, k) => `<button class="seg" type="button" style="--w:${(+s.dataset.dur || 4000) / 1000}" title="${s.dataset.name}" aria-label="Aller à : ${s.dataset.name}"><i></i></button>`).join("");
-  const segs = $$(".seg", prog);
-  segs.forEach((b, k) => b.addEventListener("click", () => show(k)));
+  prog.innerHTML = CHAPTERS.map((c, i) => `<button class="seg" type="button" title="${c.name}" aria-label="Aller à : ${c.name}"></button>`).join("");
+  const segs = [...prog.children];
+  segs.forEach((b, i) => b.addEventListener("click", () => run(i)));
+  let chap = -1, started = false;
+  const markChap = i => { chap = i; segs.forEach((s, j) => { s.classList.toggle("done", j < i); s.classList.toggle("cur", j === i); }); chapterLabel(`${i + 1} / ${CHAPTERS.length} · ${CHAPTERS[i].name}`); };
 
-  const resetScene = s => {
-    $$("[data-type]", s).forEach(b => b.textContent = "");
-    $$(".ok", s).forEach(o => o.classList.remove("show"));
-    $$("[data-reveal]", s).forEach(r => { r.innerHTML = `<span class="chalk-blank">________</span>`; });
-    $$("[data-count]", s).forEach(c => c.textContent = "0");
-    const tg = $("[data-toggle]", s); if (tg) { tg.classList.remove("prof"); $("[data-modes]", s).className = "modes e-on"; }
-  };
-  const show = k => {
-    if (k < 0 || k >= scenes.length) return;
-    if (cur >= 0 && cur !== k) { const o = scenes[cur]; o.classList.remove("on"); o.classList.add("out"); setTimeout(() => o.classList.remove("out"), 360); }
-    const s = scenes[k]; s.classList.remove("on", "out"); resetScene(s); void s.offsetWidth; s.classList.add("on");
-    cur = k; t = 0; done = new Set();
-    segs.forEach((g, j) => $("i", g).style.width = j < k ? "100%" : "0");
-    if (k === 0) { const f = $("#flash"); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go"); thunder(); } else whoosh();
-    if (k === scenes.length - 1) { stopMusic(3); segs[k].firstChild.style.width = "100%"; }
-    else if (playing) startMusic();
-  };
-  const once = (key, fn) => { if (!done.has(key)) { done.add(key); fn(); } };
-  const ease = x => 1 - Math.pow(1 - Math.min(1, Math.max(0, x)), 3);
-
-  /* Ce qui dépend du temps de la scène (compteurs, frappe au clavier, révélations) */
-  const tick = () => {
-    const s = scenes[cur];
-    $$("[data-count]", s).forEach(c => { const v = Math.round(+c.dataset.count * ease((t - 700) / 1600)); c.textContent = v.toLocaleString("fr-FR"); });
-    $$("[data-type]", s).forEach(b => { const at = +b.dataset.at, w = b.dataset.type, n = Math.floor(Math.max(0, t - at) / 75); b.textContent = w.slice(0, Math.min(w.length, n)); });
-    $$(".ok", s).forEach((o, j) => { if (t >= +o.dataset.at) once("ok" + j, () => { o.classList.add("show"); ding(); }); });
-    $$("[data-reveal]", s).forEach(r => { if (t >= +r.dataset.reveal) once("rev", () => { r.innerHTML = `<span class="chalk-ans">has never worked</span>`; ding(); }); });
-    const tg = $("[data-toggle]", s); if (tg && t >= 2800) once("tg", () => { tg.classList.add("prof"); $("[data-modes]", s).className = "modes p-on"; ding(); });
+  const run = async from => {
+    cancelAll(); const my = runId;
+    started = true; setPlaying(true);
+    $("#cardEnd").classList.remove("on"); $("#cardStart").classList.remove("on"); $("#caption").classList.add("hide");
+    layout(); Object.assign(view, { x: L.W / 2, y: L.H / 2, z: 1, rise: 0, fade: 1 }); applyCam();
+    cur.x = L.W * .7; cur.y = L.H * .75; placeCursor();
+    if (!muted && musicOn) startMusic();
+    try {
+      await new Promise(res => { loadSite(from > 0 ? CHAPTERS[from].start : "accueil").then(res); });
+      if (my !== runId) return;
+      $("#curtain").classList.toggle("off", from > 0);
+      if (from > 0) { await sleep(300); }
+      for (let i = from; i < CHAPTERS.length; i++) {
+        markChap(i);
+        if (i > from && CHAPTERS[i].start.startsWith("fiche") && !W().location.hash.includes(CHAPTERS[i].start)) await silentGo(CHAPTERS[i].start);
+        try { await CHAPTERS[i].run(); } catch (e) { if (e instanceof Stop) throw e; console.warn("Étape sautée :", CHAPTERS[i].name, e); hover(null); }
+        await sleep(350);
+      }
+      segs.forEach(s => { s.classList.add("done"); s.classList.remove("cur"); });
+      setPlaying(false, true);
+    } catch (e) { if (!(e instanceof Stop)) { console.error(e); } }
   };
 
-  const loop = now => {
-    const dt = last ? Math.min(100, now - last) : 0; last = now;
-    if (playing && cur >= 0) {
-      t += dt; tick();
-      const dur = +scenes[cur].dataset.dur;
-      if (segs[cur] && dur) $("i", segs[cur]).style.width = Math.min(100, t / dur * 100) + "%";
-      if (dur && t >= dur) show(cur + 1);
-    }
-    drawBars(now);
-    requestAnimationFrame(loop);
-  };
-  requestAnimationFrame(loop);
-
-  const setPlaying = p => {
-    playing = p; body.classList.toggle("paused", !p);
+  const setPlaying = (p, ended) => {
+    playing = p;
     $("#play").textContent = p ? "⏸" : "▶"; $("#play").setAttribute("aria-label", p ? "Pause" : "Lecture");
-    if (ac) p ? ac.resume() : ac.suspend();
+    if (ac) { if (p) { ac.resume(); } else if (!ended) ac.suspend(); }
   };
-  const setMuted = m => { muted = m; if (out) out.gain.value = m ? 0 : 1; $("#mute").textContent = m ? "🔇" : "🔊"; $("#mute").setAttribute("aria-label", m ? "Remettre le son" : "Couper le son"); };
-  const begin = withSound => {
-    $("#poster").classList.add("hide");
-    setMuted(!withSound); initAudio(); if (ac) ac.resume();
-    setPlaying(true); step = 0; show(0); startMusic();
-  };
+  const setMuted = m => { muted = m; applyVolumes(); $("#mute").textContent = m ? "🔇" : "🔊"; $("#mute").setAttribute("aria-label", m ? "Remettre le son" : "Couper le son"); if (!m && musicOn && started) startMusic(); };
+  const begin = withSound => { $("#poster").classList.add("hide"); initAudio(); if (ac) ac.resume(); setMuted(!withSound); run(0); };
   $("#start").addEventListener("click", () => begin(true));
   $("#startMute").addEventListener("click", () => begin(false));
-  $("#play").addEventListener("click", () => { if (cur < 0) return begin(true); if (cur === scenes.length - 1 && !playing) { step = 0; show(0); } setPlaying(!playing); });
-  $("#prev").addEventListener("click", () => show(Math.max(0, cur - 1)));
-  $("#next").addEventListener("click", () => show(Math.min(scenes.length - 1, cur + 1)));
-  const restart = () => { if (cur < 0) return begin(true); step = 0; setPlaying(true); show(0); startMusic(); };
-  $("#restart").addEventListener("click", restart);
-  $("[data-replay]").addEventListener("click", restart);
+  $("#play").addEventListener("click", () => {
+    if (!started) return begin(true);
+    if (!playing && segs.every(s => s.classList.contains("done"))) return run(0);
+    setPlaying(!playing);
+  });
+  $("#prev").addEventListener("click", () => started ? run(Math.max(0, chap - 1)) : begin(true));
+  $("#next").addEventListener("click", () => started ? run(Math.min(CHAPTERS.length - 1, chap + 1)) : begin(true));
+  $("#restart").addEventListener("click", () => started ? run(0) : begin(true));
+  $("#replay").addEventListener("click", () => run(0));
   $("#mute").addEventListener("click", () => { initAudio(); setMuted(!muted); });
+  $("#music").addEventListener("click", () => { initAudio(); musicOn = !musicOn; $("#music").classList.toggle("off", !musicOn); applyVolumes(); if (musicOn && started) startMusic(); });
   const full = () => { try { document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen(); } catch {} };
   $("#full").addEventListener("click", full);
   document.addEventListener("keydown", e => {
-    if (e.target.closest("a") && e.key === "Enter") return;
-    if (e.key === " " || e.key === "k") { e.preventDefault(); $("#play").click(); }
+    if (e.target.closest && e.target.closest("a") && e.key === "Enter") return;
+    if (e.key === " ") { e.preventDefault(); $("#play").click(); }
     else if (e.key === "ArrowRight") $("#next").click();
     else if (e.key === "ArrowLeft") $("#prev").click();
     else if (e.key === "m" || e.key === "M") $("#mute").click();
     else if (e.key === "f" || e.key === "F") full();
-    else if (e.key === "r" || e.key === "R") restart();
+    else if (e.key === "r" || e.key === "R") $("#restart").click();
   });
   document.addEventListener("visibilitychange", () => { if (document.hidden && playing) setPlaying(false); });
+
+  /* Avant le départ : le site est déjà chargé derrière l'écran d'accueil */
+  layout(); Object.assign(view, { x: L.W / 2, y: L.H / 2, z: 1 }); applyCam();
+  cur.x = L.W * .7; cur.y = L.H * .75; placeCursor();
+  loadSite("accueil").then(() => $("#curtain").classList.add("off"));
   })();
   </script>
 </body>

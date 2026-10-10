@@ -1,5 +1,5 @@
 /* Anglais Éclair — fonctionnement hors connexion. */
-const CACHE = "anglais-eclair-v8";
+const CACHE = "anglais-eclair-v9";
 const FILES = [
   "./", "./index.html", "./intro.html", "./manifest.webmanifest", "./assets/icon.svg", "./assets/css/fonts.css", "./assets/css/style.css",
   "./assets/js/data/vocab-1.js", "./assets/js/data/vocab-2.js", "./assets/js/data/vocab-3.js", "./assets/js/data/vocab-4.js", "./assets/js/data/vocab-5.js",

@@ -36,7 +36,8 @@ E.WORD = new Map(E.WORDS.map(w => [w.id, w]));
 E.CATS = [...new Set(E.THEMES.map(t => t.cat))];
 
 /* ---------- Sauvegarde ---------- */
-const KEY = "anglais-eclair-v1";
+/* La démo animée (intro.html) utilise une sauvegarde à part : elle ne touche jamais aux progrès de l’utilisateur. */
+const KEY = /[?&]demo\b/.test(location.search) ? "anglais-eclair-demo" : "anglais-eclair-v1";
 E.DEFAULTS = {
   name: "", level: "A1", goal: "tout",
   mode: "eleve", bg: "auto", bgCustom: "#e8f3fd", pattern: "none", showHelp: true, useDays: false, studyDays: [1, 2, 3, 4, 5, 6], restKeepsStreak: true,

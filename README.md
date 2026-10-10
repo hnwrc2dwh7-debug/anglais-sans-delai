@@ -20,7 +20,7 @@ Un site complet pour apprendre l’anglais vite, **gratuit, sans compte, sans IA
 - **Réglages** : 12 couleurs principales, 15 couleurs de fond (clairs et sombres) + couleur personnalisée, motifs (points, carreaux, lignes, cahier), mode sombre, polices, taille du texte, voix (UK, US, AU…), vitesse, etc.
 - **Aides partout** : encadré « Comment ça marche ? » sur chaque page, page Aide (FAQ, lexique, raccourcis), message de bienvenue, indices dans les exercices
 - **Partage** : page avec QR code et lien — le site est public et peut être donné à tout moment
-- **Présentation animée** (`intro.html`) : une minute en musique pour découvrir le site, à projeter ou à partager
+- **Démo animée** (`intro.html`) : le site se pilote tout seul (curseur, frappe au clavier, bruits de clic, zooms, légendes, musique) pour présenter toutes les fonctions en 2 minutes. Elle utilise une sauvegarde à part et ne touche pas aux progrès
 - Fonctionne **hors connexion** et s’installe comme une appli sur téléphone
 
 ## Mettre le site en ligne (GitHub Pages)

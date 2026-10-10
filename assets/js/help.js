@@ -132,7 +132,7 @@ E.route("partager", () => {
       <ul class="list-clean"><li>Chaque personne a ses propres progrès, sur son appareil.</li><li>Fonctionne sur téléphone, tablette et ordinateur, même hors connexion après la première visite.</li><li>Pour les professeurs : une <a href="#enseignants">page de présentation</a> résume les contenus et la méthode.</li></ul>
     </section>
   </div>
-  <section class="card stack"><h2>🎬 La présentation animée</h2><p>Une minute, en musique, pour découvrir le site : parfait à montrer en classe ou à envoyer avant de partager le lien.</p>
+  <section class="card stack"><h2>🎬 La démo animée</h2><p>2 minutes : le site se pilote tout seul (curseur, clavier, sons). Parfait à montrer en classe ou à envoyer avant de partager le lien.</p>
     <div class="row"><a class="btn spark" href="intro.html">▶ Voir la présentation</a><button class="btn" type="button" id="copyIntro">📋 Copier son lien</button></div></section>`;
 }, "Partager");
 })();
